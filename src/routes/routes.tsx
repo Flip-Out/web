@@ -1,5 +1,5 @@
 import { RouteObject } from 'react-router-dom';
-import Layout from '../components/Layout';
+import Layout from '../components/Layout/Layout';
 import AuthLoader from '../components/Loaders/AuthLoader';
 import LoginLoader from '../components/Loaders/LoginLoader';
 import LandingPage from '../pages/LandingPage/LandingPage';
@@ -10,7 +10,6 @@ export const ROOT_ROUTER = 'root';
 
 export enum AppRoutes {
   ROOT = '/',
-  LOGIN = 'login',
   STORE = 'store',
 }
 
@@ -26,11 +25,6 @@ export const routes: RouteObject[] = [
       {
         index: true,
         Component: LandingPage,
-      },
-      {
-        path: AppRoutes.LOGIN,
-        loader: LoginLoader,
-        Component: LoginPage,
       },
       {
         path: AppRoutes.STORE,

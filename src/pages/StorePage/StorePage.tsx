@@ -1,3 +1,5 @@
+import styles from './Header.module.css';
+
 export default function StorePage() {
-  return <>Store page</>;
+  return <div>Store page</div>;
 }

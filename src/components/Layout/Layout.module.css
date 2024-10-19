@@ -1,0 +1,15 @@
+.content {
+  display: flex;
+  flex-direction: column;
+  width: 100vw;
+  height: 100vh;
+  background: linear-gradient(180deg, #00000000, black),
+    url(store_background.svg);
+  background-size: cover;
+  background-position: center;
+}
+
+.main {
+  display: flex;
+  flex-grow: 1;
+}
