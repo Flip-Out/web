@@ -1,0 +1,22 @@
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 60px;
+  padding: 0 15px;
+  background: linear-gradient(
+    to right,
+    rgba(48, 238, 227, 0.15),
+    rgba(48, 238, 227, 0.3),
+    rgba(48, 238, 227, 0.15)
+  );
+}
+
+.title {
+  text-transform: uppercase;
+  font-family: OxaniumRegular;
+  font-weight: 400;
+  font-size: 24px;
+  letter-spacing: 5px;
+  text-shadow: 0 9px 9px black;
+}

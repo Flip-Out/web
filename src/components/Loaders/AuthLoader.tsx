@@ -1,6 +1,6 @@
 // import { useEffect } from 'react';
 export default function AuthLoader() {
-  const TELEGRAM_ID = '';
+  // const TELEGRAM_ID = '';
 
   // if (!isLoggedIn) {
   //   return redirect(AppRoutes.LOGIN);
