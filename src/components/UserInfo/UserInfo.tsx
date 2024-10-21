@@ -6,6 +6,7 @@ import {
   saveToLocalStorage,
 } from '../../utils/localStorage';
 import { clearIframeCookie } from '../../utils/cookie';
+import User from './User';
 
 const TELEGRAM_IFRAME_ID =
   'telegram-login-' + import.meta.env.VITE_BOT_USERNAME;
@@ -26,13 +27,14 @@ export default function UserInfo() {
   }, []);
 
   const handleAuthCallback = (data: TelegramAuthData) => {
-    console.log(123);
-
     saveToLocalStorage(LOCAL_STORAGE.TELEGRAM_AUTH_DATA, JSON.stringify(data));
+    setUser(data);
   };
   return (
     <>
-      {user ? null : (
+      {user ? (
+        <User user={user} />
+      ) : (
         <LoginButton
           onAuthCallback={handleAuthCallback}
           botUsername={import.meta.env.VITE_BOT_USERNAME}
