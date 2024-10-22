@@ -19,12 +19,12 @@ export default function User({ user }: UserProps) {
         <div className={styles.userName}>{username}</div>
         <div className={styles.detailsWrapper}>
           <div className={styles.details}>
-            <Power />
-            <div>654</div>
+            <Power className={styles.icon} />
+            <div className={styles.pink}>654</div>
           </div>
           <div className={styles.details}>
-            <Crystals />
-            <div>249</div>
+            <Crystals className={styles.icon} />
+            <div className={styles.orange}>249</div>
           </div>
         </div>
       </div>

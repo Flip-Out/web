@@ -3,6 +3,8 @@
   align-items: center;
   text-align: end;
   gap: 10px;
+  font-family: OxaniumRegular;
+  font-size: 16px;
 }
 
 .userInfo {
@@ -16,17 +18,39 @@
 
 .detailsWrapper {
   display: flex;
-  gap: 10px;
+  gap: 40px;
+  font-weight: 500;
+
+  @media (max-width: 600px) {
+    flex-direction: column;
+    gap: 0;
+  }
 }
 
 .details {
   display: flex;
   gap: 10px;
+  position: relative;
 }
 
 .userName {
-  font-family: OxaniumRegular;
   font-weight: 400;
-  font-size: 16px;
   color: white;
+
+  @media (max-width: 600px) {
+    display: none;
+  }
+}
+
+.icon {
+  position: absolute;
+  transform: translate(-75%, -30%);
+}
+
+.pink {
+  color: rgba(255, 77, 195, 1);
+}
+
+.orange {
+  color: rgba(242, 132, 36, 1);
 }

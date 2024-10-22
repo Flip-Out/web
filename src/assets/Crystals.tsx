@@ -1,4 +1,4 @@
-export default function Crystals() {
+export default function Power({ className }: { className: string }) {
   return (
     <svg
       width="56"
@@ -6,8 +6,9 @@ export default function Crystals() {
       viewBox="0 0 56 45"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
+      className={className}
     >
-      <g filter="url(#filter0_d_1273_5314)">
+      <g filter="url(#filter0_d_1273_5316)">
         <path
           fill-rule="evenodd"
           clip-rule="evenodd"
@@ -25,7 +26,7 @@ export default function Crystals() {
       </g>
       <defs>
         <filter
-          id="filter0_d_1273_5314"
+          id="filter0_d_1273_5316"
           x="0"
           y="0.5"
           width="56"
@@ -50,12 +51,12 @@ export default function Crystals() {
           <feBlend
             mode="normal"
             in2="BackgroundImageFix"
-            result="effect1_dropShadow_1273_5314"
+            result="effect1_dropShadow_1273_5316"
           />
           <feBlend
             mode="normal"
             in="SourceGraphic"
-            in2="effect1_dropShadow_1273_5314"
+            in2="effect1_dropShadow_1273_5316"
             result="shape"
           />
         </filter>
