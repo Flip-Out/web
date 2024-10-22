@@ -1,7 +1,6 @@
 import { TelegramAuthData } from '@telegram-auth/react';
+import { Currency } from '../Currency/Currency';
 import styles from './User.module.css';
-import Power from '../../assets/Power';
-import Crystals from '../../assets/Crystals';
 
 interface UserProps {
   user: TelegramAuthData;
@@ -17,16 +16,7 @@ export default function User({ user }: UserProps) {
     <div className={styles.userWrapper}>
       <div className={styles.userInfo}>
         <div className={styles.userName}>{username}</div>
-        <div className={styles.detailsWrapper}>
-          <div className={styles.details}>
-            <Power className={styles.icon} />
-            <div className={styles.pink}>654</div>
-          </div>
-          <div className={styles.details}>
-            <Crystals className={styles.icon} />
-            <div className={styles.orange}>249</div>
-          </div>
-        </div>
+        <Currency power={100} crystals={100} className={styles.currency} />
       </div>
       <img
         src={user.photo_url || 'empty_user.jpg'}

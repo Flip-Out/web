@@ -1,0 +1,33 @@
+.userWrapper {
+  display: flex;
+  align-items: center;
+  text-align: end;
+  gap: 10px;
+  font-family: OxaniumRegular;
+  font-size: 16px;
+}
+
+.userInfo {
+  display: flex;
+  flex-direction: column;
+}
+
+.userIcon {
+  border-radius: 50%;
+}
+
+.userName {
+  font-weight: 400;
+  color: white;
+
+  @media (max-width: 600px) {
+    display: none;
+  }
+}
+
+.currency {
+  @media (max-width: 600px) {
+    flex-direction: column;
+    gap: 0;
+  }
+}

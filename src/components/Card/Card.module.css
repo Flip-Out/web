@@ -1,0 +1,11 @@
+.card {
+  min-width: max-content;
+  min-height: max-content;
+  border: 1px solid rgba(48, 238, 227, 0.2);
+  background: linear-gradient(
+    90.13deg,
+    rgba(44, 42, 42, 0.9) 0.11%,
+    rgba(0, 0, 0, 0.9) 50%,
+    rgba(0, 0, 0, 0.8) 99.89%
+  );
+}

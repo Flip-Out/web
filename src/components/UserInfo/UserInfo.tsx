@@ -5,7 +5,7 @@ import {
   LOCAL_STORAGE,
   saveToLocalStorage,
 } from '../../utils/localStorage';
-import User from './User';
+import User from '../User/User';
 
 export default function UserInfo() {
   const [user, setUser] = useState<TelegramAuthData>();

@@ -10,8 +10,8 @@ export default function Power({ className }: { className: string }) {
     >
       <g filter="url(#filter0_d_1273_5316)">
         <path
-          fill-rule="evenodd"
-          clip-rule="evenodd"
+          fillRule="evenodd"
+          clipRule="evenodd"
           d="M27.9999 33.5L22.6665 22.8333L27.9999 17.5L33.3332 22.8333L27.9999 33.5ZM27.9999 30.8333L31.9999 22.8333L27.9999 24.1667L23.9999 22.8333L27.9999 30.8333Z"
           fill="#F28424"
         />
@@ -32,9 +32,9 @@ export default function Power({ className }: { className: string }) {
           width="56"
           height="56"
           filterUnits="userSpaceOnUse"
-          color-interpolation-filters="sRGB"
+          colorInterpolationFilters="sRGB"
         >
-          <feFlood flood-opacity="0" result="BackgroundImageFix" />
+          <feFlood floodOpacity="0" result="BackgroundImageFix" />
           <feColorMatrix
             in="SourceAlpha"
             type="matrix"
