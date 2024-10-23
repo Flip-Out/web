@@ -12,4 +12,6 @@
 .main {
   display: flex;
   flex-grow: 1;
+  font-family: OxaniumRegular;
+  font-size: 22px;
 }
