@@ -1,5 +1,4 @@
 import { GenericProps, Subscription } from '../../types';
-import { Button } from '../Button/Button';
 import { PayButton } from '../Button/PayButton';
 import { Card } from '../Card/Card';
 import { Currency } from '../Currency/Currency';

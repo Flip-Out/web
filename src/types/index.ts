@@ -13,3 +13,11 @@ export interface Subscription {
   currency: number;
   tonCurrency: number;
 }
+
+export interface Good {
+  id: number;
+  description: string;
+  image: string;
+  currency: number;
+  tonCurrency: number;
+}
