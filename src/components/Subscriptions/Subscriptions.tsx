@@ -1,4 +1,6 @@
 import { GenericProps, Subscription } from '../../types';
+import { Button } from '../Button/Button';
+import { PayButton } from '../Button/PayButton';
 import { Card } from '../Card/Card';
 import { Currency } from '../Currency/Currency';
 import styles from './Subscriptions.module.css';
@@ -12,14 +14,20 @@ export function Subscriptions({ subscriptions }: SubscriptionProps) {
     <Card className={styles.subscription} key={index}>
       <div className={styles.subscriptionWrapper}>
         <div className={styles.details}>{subscription.details}</div>
-        <div className={styles.currency}>
-          <Currency
-            power={subscription.power}
-            crystals={subscription.crystals}
-            direction="revert"
-            className={styles.currencyDetails}
+        <div className={styles.currencyWrapper}>
+          <div className={styles.currency}>
+            <Currency
+              power={subscription.power}
+              crystals={subscription.crystals}
+              direction="revert"
+              className={styles.currencyDetails}
+            />
+            / {subscription.frequency}
+          </div>
+          <PayButton
+            currency={subscription.currency}
+            tonCurrency={subscription.tonCurrency}
           />
-          / {subscription.frequency}
         </div>
       </div>
     </Card>
