@@ -9,7 +9,7 @@ interface UserProps {
 export default function User({ user }: UserProps) {
   const username =
     user.first_name || user.last_name
-      ? user.first_name + ' ' + user.last_name
+      ? user.first_name || '' + ' ' + user.last_name || ''
       : 'Unknown';
 
   return (
