@@ -6,11 +6,12 @@ import { Button } from './Button';
 interface PayButton extends GenericProps {
   currency: number;
   tonCurrency: number;
+  handleClick: () => void;
 }
 
-export function PayButton({ currency, tonCurrency }: PayButton) {
+export function PayButton({ currency, tonCurrency, handleClick }: PayButton) {
   return (
-    <Button>
+    <Button handleClick={handleClick}>
       <div>{currency}</div>
       <InternalCurrency />
       <>/</>

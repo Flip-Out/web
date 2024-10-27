@@ -9,6 +9,10 @@ interface SubscriptionProps extends GenericProps {
 }
 
 export function Subscriptions({ subscriptions }: SubscriptionProps) {
+  const subscribe = () => {
+    console.log('subscribe');
+  };
+
   return subscriptions.map((subscription, index) => (
     <Card className={styles.subscription} key={index}>
       <div className={styles.subscriptionWrapper}>
@@ -26,6 +30,7 @@ export function Subscriptions({ subscriptions }: SubscriptionProps) {
           <PayButton
             currency={subscription.currency}
             tonCurrency={subscription.tonCurrency}
+            handleClick={subscribe}
           />
         </div>
       </div>

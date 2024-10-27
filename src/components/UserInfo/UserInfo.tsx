@@ -11,16 +11,17 @@ export default function UserInfo() {
   const [user, setUser] = useState<TelegramAuthData>();
 
   useLayoutEffect(() => {
-    const userData = loadFromLocalStorage<TelegramAuthData>(
+    const userData = loadFromLocalStorage<string>(
       LOCAL_STORAGE.TELEGRAM_AUTH_DATA
     );
 
     if (userData) {
-      setUser(userData);
+      setUser(JSON.parse(userData) as TelegramAuthData);
     }
   }, []);
 
   const handleAuthCallback = (data: TelegramAuthData) => {
+    console.log(data);
     saveToLocalStorage(LOCAL_STORAGE.TELEGRAM_AUTH_DATA, JSON.stringify(data));
     setUser(data);
   };

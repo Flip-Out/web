@@ -3,8 +3,13 @@ import styles from './Button.module.css';
 
 interface ButtonProps extends GenericProps {
   className?: string;
+  handleClick: () => void;
 }
 
-export function Button({ children, className }: ButtonProps) {
-  return <div className={`${styles.button} ${className}`}>{children}</div>;
+export function Button({ children, className, handleClick }: ButtonProps) {
+  return (
+    <div className={`${styles.button} ${className}`} onClick={handleClick}>
+      {children}
+    </div>
+  );
 }

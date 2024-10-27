@@ -19,3 +19,12 @@ export function loadFromLocalStorage<T>(key: LOCAL_STORAGE): T | null {
     return null;
   }
 }
+
+export function removeFromLocalStorage(key: LOCAL_STORAGE): boolean {
+  try {
+    localStorage.removeItem(key);
+    return true;
+  } catch (_) {
+    return false;
+  }
+}
