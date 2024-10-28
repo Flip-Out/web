@@ -8,9 +8,10 @@ import styles from './Goods.module.css';
 
 interface GoodsProps extends GenericProps {
   goods: Array<Good>;
+  handleBuyInit: (url: string) => void;
 }
 
-export function Goods({ goods }: GoodsProps) {
+export function Goods({ goods, handleBuyInit }: GoodsProps) {
   const { createOrder } = useStoreApi();
   const { dispatch } = useDispatch();
 
@@ -18,7 +19,8 @@ export function Goods({ goods }: GoodsProps) {
     const amount = currency + '00';
     dispatch(updateLoadingState(true));
     createOrder({ purchase_type: PurchaseType.SINGLE_PAYMENT, amount }).then(
-      () => {
+      (data) => {
+        handleBuyInit(data?.data.paymentLink || '');
         dispatch(updateLoadingState(false));
       },
       (e) =>

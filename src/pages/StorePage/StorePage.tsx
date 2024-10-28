@@ -3,6 +3,9 @@ import { Good, Subscription } from '../../types';
 import styles from './StorePage.module.css';
 import { Subscriptions } from '../../components/Subscriptions/Subscriptions';
 import { Goods } from '../../components/Goods/Goods';
+import { AeonModal } from '../../components/AeonModal/AeonModal';
+import { useDispatch } from '../../store/dispatch';
+import { addNotification } from '../../store/actions';
 
 const mockSubscriptions: Subscription[] = [
   {
@@ -65,6 +68,23 @@ const mockGoods: Good[] = [
 export default function StorePage() {
   const [subscriptions] = useState<Subscription[]>(mockSubscriptions);
   const [goods] = useState<Good[]>(mockGoods);
+  const [aeonModal, setAeonModal] = useState({ open: false, url: '' });
+  const { dispatch } = useDispatch();
+
+  const handleBuyInit = (url: string) => {
+    if (url) {
+      setAeonModal({ open: true, url });
+      return;
+    }
+    dispatch(
+      addNotification({ type: 'error', message: "Payment wasn't initialized" })
+    );
+  };
+
+  const handleCloseAeonModal = () => {
+    setAeonModal({ open: false, url: '' });
+  };
+
   return (
     <div className={styles.store}>
       <div className={styles.subscriptions}>
@@ -72,8 +92,13 @@ export default function StorePage() {
       </div>
       <div className={styles.title}>all goods</div>
       <div className={styles.goods}>
-        <Goods goods={goods} />
+        <Goods goods={goods} handleBuyInit={handleBuyInit} />
       </div>
+      <AeonModal
+        open={aeonModal.open}
+        url={aeonModal.url}
+        onCLose={handleCloseAeonModal}
+      />
     </div>
   );
 }

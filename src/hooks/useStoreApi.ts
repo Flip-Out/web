@@ -14,7 +14,7 @@ export function useStoreApi() {
       return;
     }
 
-    return axios.post('/store/purchase', {
+    return axios.post<{ paymentLink: string }>('/store/purchase', {
       user: JSON.parse(user),
       purchase_type,
       amount,
