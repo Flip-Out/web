@@ -1,0 +1,50 @@
+.background {
+  width: 100vw;
+  height: 100vh;
+  font-family: OxaniumRegular;
+  font-size: 16px;
+  background-color: black;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+.icon {
+  width: 68px !important;
+  width: 68px !important;
+}
+
+.success {
+  color: rgba(48, 238, 227, 1);
+}
+
+.successBackground {
+  background-color: rgba(48, 238, 227, 1);
+}
+
+.button {
+  text-transform: uppercase;
+  width: 100%;
+}
+
+.error {
+  color: rgba(255, 198, 71, 1);
+}
+
+.loader {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.8);
+}
+
+.title {
+  font-size: 26px;
+  font-weight: 600;
+  text-align: center;
+}
+
+.message {
+  font-weight: 400;
+}

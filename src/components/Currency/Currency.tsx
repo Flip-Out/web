@@ -4,8 +4,8 @@ import { GenericProps } from '../../types';
 import styles from './Currency.module.css';
 
 interface CurrencyProps extends GenericProps {
-  power: number;
-  crystals: number;
+  power: number | string;
+  crystals: number | string;
   className?: string;
   direction?: 'straight' | 'revert';
 }

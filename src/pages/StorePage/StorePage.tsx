@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Good, Subscription } from '../../types';
 import styles from './StorePage.module.css';
 import { Subscriptions } from '../../components/Subscriptions/Subscriptions';
@@ -6,14 +6,21 @@ import { Goods } from '../../components/Goods/Goods';
 import { AeonModal } from '../../components/AeonModal/AeonModal';
 import { useDispatch } from '../../store/dispatch';
 import { addNotification } from '../../store/actions';
+import {
+  loadFromLocalStorage,
+  LOCAL_STORAGE,
+  removeFromLocalStorage,
+  saveToLocalStorage,
+} from '../../utils/localStorage';
 
 const mockSubscriptions: Subscription[] = [
   {
     id: 1,
     power: 101,
     crystals: 256,
-    details:
-      'Subscribe to the flipout weekly pack and receive game resources daily',
+    cash: 256,
+    details: 'Subscribe to the flipout weekly pack',
+    additionalInfo: 'Receive daily:',
     currency: 25,
     tonCurrency: 15,
     frequency: 'per day',
@@ -24,14 +31,14 @@ const mockGoods: Good[] = [
   {
     id: 1,
     description: '10 xPloits',
-    currency: 10,
+    currency: 1,
     tonCurrency: 1.9,
     image: '',
   },
   {
     id: 2,
     description: '100 xPloits',
-    currency: 100,
+    currency: 3,
     tonCurrency: 19,
     image: '',
   },
@@ -73,6 +80,7 @@ export default function StorePage() {
 
   const handleBuyInit = (url: string) => {
     if (url) {
+      saveToLocalStorage(LOCAL_STORAGE.AEON_URL, url);
       setAeonModal({ open: true, url });
       return;
     }
@@ -81,7 +89,23 @@ export default function StorePage() {
     );
   };
 
+  // const addCloseIframe = () => {
+  //   window.closeIframe = () => {
+  //     handleCloseAeonModal();
+  //     window.closeIframe = null;
+  //   };
+  // };
+
+  useEffect(() => {
+    const url = loadFromLocalStorage<string>(LOCAL_STORAGE.AEON_URL);
+    if (url) {
+      setAeonModal({ open: true, url });
+      // addCloseIframe();
+    }
+  }, []);
+
   const handleCloseAeonModal = () => {
+    removeFromLocalStorage(LOCAL_STORAGE.AEON_URL);
     setAeonModal({ open: false, url: '' });
   };
 

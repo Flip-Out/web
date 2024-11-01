@@ -17,6 +17,7 @@
     "@mui/material": "^6.1.5",
     "@telegram-auth/react": "^1.0.4",
     "axios": "^1.7.7",
+    "classnames": "^2.5.1",
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-prettier": "^5.2.1",
     "prettier": "^3.3.3",

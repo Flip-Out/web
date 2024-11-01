@@ -26,5 +26,8 @@ dist-ssr
 
 .terraform
 .terraform.lock.hcl
+
 dev.env
 prod.env
+.env*
+tsconfig.app.tsbuildinfo
