@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Good, Subscription } from '../../types';
 import styles from './StorePage.module.css';
 import { Subscriptions } from '../../components/Subscriptions/Subscriptions';
@@ -6,6 +6,12 @@ import { Goods } from '../../components/Goods/Goods';
 import { AeonModal } from '../../components/AeonModal/AeonModal';
 import { useDispatch } from '../../store/dispatch';
 import { addNotification } from '../../store/actions';
+import {
+  loadFromLocalStorage,
+  LOCAL_STORAGE,
+  removeFromLocalStorage,
+  saveToLocalStorage,
+} from '../../utils/localStorage';
 
 const mockSubscriptions: Subscription[] = [
   {
@@ -73,6 +79,7 @@ export default function StorePage() {
 
   const handleBuyInit = (url: string) => {
     if (url) {
+      saveToLocalStorage(LOCAL_STORAGE.AEON_URL, url);
       setAeonModal({ open: true, url });
       return;
     }
@@ -81,7 +88,23 @@ export default function StorePage() {
     );
   };
 
+  // const addCloseIframe = () => {
+  //   window.closeIframe = () => {
+  //     handleCloseAeonModal();
+  //     window.closeIframe = null;
+  //   };
+  // };
+
+  useEffect(() => {
+    const url = loadFromLocalStorage<string>(LOCAL_STORAGE.AEON_URL);
+    if (url) {
+      setAeonModal({ open: true, url });
+      // addCloseIframe();
+    }
+  }, []);
+
   const handleCloseAeonModal = () => {
+    removeFromLocalStorage(LOCAL_STORAGE.AEON_URL);
     setAeonModal({ open: false, url: '' });
   };
 

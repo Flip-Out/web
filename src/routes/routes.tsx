@@ -3,12 +3,14 @@ import Layout from '../components/Layout/Layout';
 import AuthLoader from '../components/Loaders/AuthLoader';
 import LandingPage from '../pages/LandingPage/LandingPage';
 import StorePage from '../pages/StorePage/StorePage';
+import VerifyPurchasePage from '../pages/VerifyPurchasePage/VerifyPurchasePage';
 
 export const ROOT_ROUTER = 'root';
 
 export enum AppRoutes {
   ROOT = '/',
   STORE = 'store',
+  VERIFY_PAYMENT = 'verify_payment',
 }
 
 export const routes: RouteObject[] = [
@@ -30,6 +32,11 @@ export const routes: RouteObject[] = [
             Component: StorePage,
           },
         ],
+      },
+      {
+        path: AppRoutes.VERIFY_PAYMENT,
+        loader: AuthLoader,
+        Component: VerifyPurchasePage,
       },
     ],
   },

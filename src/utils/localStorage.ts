@@ -1,5 +1,6 @@
 export enum LOCAL_STORAGE {
   TELEGRAM_AUTH_DATA = 'TELEGRAM_AUTH_DATA',
+  AEON_URL = 'AEON_URL',
 }
 
 export function saveToLocalStorage(key: LOCAL_STORAGE, value: string): boolean {
