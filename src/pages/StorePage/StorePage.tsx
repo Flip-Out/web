@@ -30,14 +30,14 @@ const mockGoods: Good[] = [
   {
     id: 1,
     description: '10 xPloits',
-    currency: 10,
+    currency: 1,
     tonCurrency: 1.9,
     image: '',
   },
   {
     id: 2,
     description: '100 xPloits',
-    currency: 100,
+    currency: 3,
     tonCurrency: 19,
     image: '',
   },
