@@ -2,7 +2,7 @@ import { TelegramAuthData } from '@telegram-auth/react';
 import { ReactElement } from 'react';
 
 export interface GenericProps {
-  children?: ReactElement | ReactElement[];
+  children?: ReactElement | ReactElement[] | string;
 }
 
 export interface Subscription {
@@ -58,3 +58,13 @@ export type Action =
   | { type: ActionType.SET_LOADING; payload: boolean }
   | { type: ActionType.REMOVE_NOTIFICATION; payload: string }
   | { type: ActionType.ADD_NOTIFICATION; payload: Omit<Notification, 'id'> };
+
+export enum PurchaseStatus {
+  PENDING = 'PENDING',
+  COMPLETED = 'COMPLETED',
+  CLOSE = 'CLOSE',
+  TIMEOUT = 'TIMEOUT',
+  FAILED = 'FAILED',
+  DELAY_SUCCESS = 'DELAY_SUCCESS',
+  DELAY_FAILED = 'DELAY_FAILED',
+}
