@@ -18,8 +18,9 @@ const mockSubscriptions: Subscription[] = [
     id: 1,
     power: 101,
     crystals: 256,
-    details:
-      'Subscribe to the flipout weekly pack and receive game resources daily',
+    cash: 256,
+    details: 'Subscribe to the flipout weekly pack',
+    additionalInfo: 'Receive daily:',
     currency: 25,
     tonCurrency: 15,
     frequency: 'per day',

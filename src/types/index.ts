@@ -9,7 +9,9 @@ export interface Subscription {
   id: number;
   power: number;
   crystals: number;
+  cash: number;
   details: string;
+  additionalInfo: string;
   frequency: string;
   currency: number;
   tonCurrency: number;

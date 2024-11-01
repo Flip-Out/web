@@ -1,7 +1,11 @@
+import Cash from '../../assets/Cash';
+import Crystals from '../../assets/Crystals';
+import InternalCurrency from '../../assets/InternalCurrency';
+import Power from '../../assets/Power';
+import TonCurrency from '../../assets/TonCurrency';
 import { GenericProps, Subscription } from '../../types';
-import { PayButton } from '../Button/PayButton';
+import { Button } from '../Button/Button';
 import { Card } from '../Card/Card';
-import { Currency } from '../Currency/Currency';
 import styles from './Subscriptions.module.css';
 
 interface SubscriptionProps extends GenericProps {
@@ -16,22 +20,35 @@ export function Subscriptions({ subscriptions }: SubscriptionProps) {
   return subscriptions.map((subscription, index) => (
     <Card className={styles.subscription} key={index}>
       <div className={styles.subscriptionWrapper}>
-        <div className={styles.details}>{subscription.details}</div>
+        <div className={styles.details}>
+          <div>{subscription.details}</div>
+          <div className={styles.additionalInfo}>
+            <div>{subscription.additionalInfo}</div>
+            <div className={styles.list}>
+              <div className={styles.ability}>
+                <Power className={styles.icon} />
+                <div className={styles.pink}>+{subscription.power}</div>
+              </div>
+              <div className={styles.ability}>
+                <Crystals className={styles.icon} />
+                <div className={styles.orange}>+{subscription.crystals}</div>
+              </div>
+              <div className={styles.ability}>
+                <Cash className={styles.icon} />
+                <div className={styles.turqouise}>+{subscription.cash}</div>
+              </div>
+            </div>
+          </div>
+        </div>
         <div className={styles.currencyWrapper}>
           <div className={styles.currency}>
-            <Currency
-              power={subscription.power}
-              crystals={subscription.crystals}
-              direction="revert"
-              className={styles.currencyDetails}
-            />
-            / {subscription.frequency}
+            <div>{subscription.currency}</div>
+            <InternalCurrency className={styles.payIcon} />
+            <>/</>
+            <div>{subscription.tonCurrency}</div>
+            <TonCurrency className={styles.payIcon} />
           </div>
-          <PayButton
-            currency={subscription.currency}
-            tonCurrency={subscription.tonCurrency}
-            handleClick={subscribe}
-          />
+          <Button handleClick={subscribe}>subscribe</Button>
         </div>
       </div>
     </Card>
