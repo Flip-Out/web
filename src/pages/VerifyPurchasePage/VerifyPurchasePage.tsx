@@ -43,9 +43,7 @@ function RequestResult({ children, title, message }: RequestResultProps) {
 }
 
 export default function VerifyPurchasePage() {
-  const [status, setStatus] = useState<PurchaseStatus>(
-    PurchaseStatus.COMPLETED
-  );
+  const [status, setStatus] = useState<PurchaseStatus>(PurchaseStatus.PENDING);
   const [searchParams] = useSearchParams();
   const { requestPaymenStatus } = useStoreApi();
 
