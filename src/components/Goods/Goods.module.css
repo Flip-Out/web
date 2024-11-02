@@ -1,7 +1,12 @@
 .good {
   width: 30%;
-  padding: 10px 20px;
+  padding-bottom: 20px;
   box-sizing: border-box;
+
+  @media (max-width: 680px) {
+    max-width: 400px;
+    width: 100%;
+  }
 }
 
 .goodnWrapper {
@@ -9,4 +14,31 @@
   flex-direction: column;
   align-items: center;
   gap: 15px;
+}
+
+.image {
+  width: 100%;
+}
+
+.button {
+  width: 100px;
+}
+
+.description {
+  font-size: 20px;
+}
+
+.price {
+  display: flex;
+  font-size: 18px;
+  gap: 3px;
+}
+
+.discount {
+  background-color: rgba(235, 3, 59, 1);
+  border-radius: 58px;
+  font-size: 16px;
+  color: white;
+  min-height: 22px;
+  text-transform: uppercase;
 }

@@ -13,6 +13,10 @@
   font-size: 20px;
   box-sizing: border-box;
   min-height: max-content;
+
+  @media (max-width: 870px) {
+    flex-direction: column;
+  }
 }
 
 .details {
@@ -22,6 +26,18 @@
   max-width: 47%;
   width: 47%;
   gap: 10px;
+
+  @media (max-width: 870px) {
+    width: 100%;
+    max-width: 100%;
+    align-items: center;
+  }
+}
+
+.detailsTitle {
+  @media (max-width: 870px) {
+    text-align: center;
+  }
 }
 
 .additionalInfo {
@@ -29,6 +45,13 @@
   justify-content: flex-start;
   font-size: 18px;
   gap: 10px;
+
+  @media (max-width: 870px) {
+    flex-direction: column-reverse;
+    align-items: center;
+    gap: 5px;
+    margin-bottom: 10px;
+  }
 }
 
 .list {
@@ -43,6 +66,12 @@
   max-width: 47%;
   width: 47%;
   gap: 10px;
+
+  @media (max-width: 870px) {
+    width: 100%;
+    max-width: 100%;
+    align-items: center;
+  }
 }
 
 .currency {

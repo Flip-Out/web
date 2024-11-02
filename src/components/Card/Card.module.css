@@ -9,4 +9,5 @@
     rgba(0, 0, 0, 0.8) 99.89%
   );
   border-radius: 10px;
+  overflow: hidden;
 }

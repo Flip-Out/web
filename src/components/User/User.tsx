@@ -1,6 +1,11 @@
 import { TelegramAuthData } from '@telegram-auth/react';
 import { Currency } from '../Currency/Currency';
 import styles from './User.module.css';
+import Logout from '../../assets/Logout';
+import {
+  LOCAL_STORAGE,
+  removeFromLocalStorage,
+} from '../../utils/localStorage';
 
 interface UserProps {
   user: TelegramAuthData;
@@ -11,6 +16,11 @@ export default function User({ user }: UserProps) {
     user.first_name || user.last_name
       ? user.first_name || '' + ' ' + user.last_name || ''
       : 'Unknown';
+
+  const onLogOutClick = () => {
+    removeFromLocalStorage(LOCAL_STORAGE.TELEGRAM_AUTH_DATA);
+    location.reload();
+  };
 
   return (
     <div className={styles.userWrapper}>
@@ -25,6 +35,9 @@ export default function User({ user }: UserProps) {
         height={42}
         className={styles.userIcon}
       />
+      <div onClick={onLogOutClick}>
+        <Logout className={styles.logout} />
+      </div>
     </div>
   );
 }

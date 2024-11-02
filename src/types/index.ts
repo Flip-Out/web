@@ -23,6 +23,7 @@ export interface Good {
   image: string;
   currency: number;
   tonCurrency: number;
+  discount?: string;
 }
 
 export enum PurchaseType {

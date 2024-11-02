@@ -21,7 +21,7 @@ export function Subscriptions({ subscriptions }: SubscriptionProps) {
     <Card className={styles.subscription} key={index}>
       <div className={styles.subscriptionWrapper}>
         <div className={styles.details}>
-          <div>{subscription.details}</div>
+          <div className={styles.detailsTitle}>{subscription.details}</div>
           <div className={styles.additionalInfo}>
             <div>{subscription.additionalInfo}</div>
             <div className={styles.list}>
