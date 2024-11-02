@@ -82,3 +82,13 @@ export interface Balance {
   currencyName: string;
   balance: number;
 }
+
+export enum Browser {
+  CHROME = 'CHROME',
+  SAFARI = 'SAFARI',
+  FIREFOX = 'FIREFOX',
+  EDGE = 'EDGE',
+  OPERA = 'OPERA',
+  INTERNET_EXPLORER = 'INTERNET_EXPLORER',
+  UNKNOWN_BROWSER = 'UNKNOWN_BROWSER',
+}

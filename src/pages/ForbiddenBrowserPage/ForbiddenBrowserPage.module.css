@@ -1,0 +1,9 @@
+.background {
+  width: 100vw;
+  height: 100vh;
+  font-family: OxaniumRegular;
+  font-size: 16px;
+  background-color: black;
+  padding: 20px;
+  box-sizing: border-box;
+}

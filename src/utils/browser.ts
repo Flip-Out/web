@@ -1,20 +1,16 @@
+import { Browser } from '../types';
+
 export function detectBrowser() {
   const userAgent = navigator.userAgent || navigator.vendor || window.opera;
-  console.log('userAgent', userAgent);
-
-  // Detect Telegram in-app browser
-  if (userAgent.includes('Telegram')) {
-    return 'Telegram Browser';
-  }
 
   // Detect Chrome (including Chromium-based browsers like Brave, Edge, Opera)
-  if (/Chrome/.test(userAgent) && /Google Inc/.test(navigator.vendor)) {
-    return 'Chrome';
+  if (!!window.chrome) {
+    return Browser.CHROME;
   }
 
   // Detect Safari
-  if (/Safari/.test(userAgent) && /Apple Computer/.test(navigator.vendor)) {
-    return 'Safari';
+  if (window.safari) {
+    return Browser.SAFARI;
   }
 
   // Detect Firefox
@@ -24,19 +20,19 @@ export function detectBrowser() {
 
   // Detect Microsoft Edge (Chromium-based)
   if (/Edg/.test(userAgent)) {
-    return 'Edge';
+    return Browser.EDGE;
   }
 
   // Detect Opera
   if (/OPR|Opera/.test(userAgent)) {
-    return 'Opera';
+    return Browser.OPERA;
   }
 
   // Detect Internet Explorer
   if (/Trident/.test(userAgent)) {
-    return 'Internet Explorer';
+    return Browser.INTERNET_EXPLORER;
   }
 
   // Default case if the browser is not recognized
-  return 'Unknown Browser';
+  return Browser.UNKNOWN_BROWSER;
 }

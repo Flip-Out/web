@@ -7,6 +7,7 @@
     url('/store_background.svg');
   background-size: cover;
   background-position: center;
+  color: white;
 }
 
 .main {
