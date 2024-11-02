@@ -45,6 +45,9 @@ export interface Notification {
 }
 
 export interface AppState {
+  user: {
+    balances: Array<Balance>;
+  };
   settings: {
     isLoading: boolean;
     notifications: Notification[];
@@ -55,12 +58,14 @@ export enum ActionType {
   SET_LOADING = 'SET_LOADING',
   REMOVE_NOTIFICATION = 'REMOVE_NOTIFICATION',
   ADD_NOTIFICATION = 'ADD_NOTIFICATION',
+  UPDATE_BALANCES = 'UPDATE_BALANCES',
 }
 
 export type Action =
   | { type: ActionType.SET_LOADING; payload: boolean }
   | { type: ActionType.REMOVE_NOTIFICATION; payload: string }
-  | { type: ActionType.ADD_NOTIFICATION; payload: Omit<Notification, 'id'> };
+  | { type: ActionType.ADD_NOTIFICATION; payload: Omit<Notification, 'id'> }
+  | { type: ActionType.UPDATE_BALANCES; payload: Balance[] };
 
 export enum PurchaseStatus {
   PENDING = 'PENDING',
@@ -70,4 +75,10 @@ export enum PurchaseStatus {
   FAILED = 'FAILED',
   DELAY_SUCCESS = 'DELAY_SUCCESS',
   DELAY_FAILED = 'DELAY_FAILED',
+}
+
+export interface Balance {
+  currencyId: string;
+  currencyName: string;
+  balance: number;
 }

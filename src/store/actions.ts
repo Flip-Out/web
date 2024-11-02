@@ -1,4 +1,4 @@
-import { Action, ActionType, Notification } from '../types';
+import { Action, ActionType, Balance, Notification } from '../types';
 
 export const updateLoadingState = (isLoading: boolean): Action => ({
   type: ActionType.SET_LOADING,
@@ -15,4 +15,9 @@ export const addNotification = (
 ): Action => ({
   type: ActionType.ADD_NOTIFICATION,
   payload: notification,
+});
+
+export const updateBalances = (balances: Balance[]): Action => ({
+  type: ActionType.UPDATE_BALANCES,
+  payload: balances,
 });

@@ -12,6 +12,7 @@ import {
   removeFromLocalStorage,
   saveToLocalStorage,
 } from '../../utils/localStorage';
+import { useStoreApi } from '../../hooks/useStoreApi';
 
 const mockSubscriptions: Subscription[] = [
   {
@@ -82,6 +83,7 @@ export default function StorePage() {
   const [goods] = useState<Good[]>(mockGoods);
   const [aeonModal, setAeonModal] = useState({ open: false, url: '' });
   const { dispatch } = useDispatch();
+  // const { loadUserBalance } = useStoreApi();
 
   const handleBuyInit = (url: string) => {
     if (url) {
@@ -98,6 +100,18 @@ export default function StorePage() {
   //   window.closeIframe = () => {
   //     handleCloseAeonModal();
   //     window.closeIframe = null;
+  // loadUserBalance()
+  //     .then((data) => {
+  //       dispatch(updateBalances(data.data));
+  //     })
+  //     .catch((e) => {
+  //       dispatch(
+  //         addNotification({
+  //           message: e?.message || 'Failed to load user balance',
+  //           type: 'error',
+  //         })
+  //       );
+  //     });
   //   };
   // };
 

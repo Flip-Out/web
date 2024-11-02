@@ -1,18 +1,23 @@
 import axios from '../lib/axios';
-import { PurchaseRequestDto, PurchaseStatus } from '../types';
+import { Balance, PurchaseRequestDto, PurchaseStatus } from '../types';
 import { loadFromLocalStorage, LOCAL_STORAGE } from '../utils/localStorage';
 
 export function useStoreApi() {
-  const createOrder = async ({
-    purchase_type,
-    amount,
-  }: Omit<PurchaseRequestDto, 'user'>) => {
+  const getUser = () => {
     const user = loadFromLocalStorage(
       LOCAL_STORAGE.TELEGRAM_AUTH_DATA
     ) as string;
     if (!user) {
-      return;
+      throw new Error('User not found');
     }
+    return user;
+  };
+
+  const createOrder = async ({
+    purchase_type,
+    amount,
+  }: Omit<PurchaseRequestDto, 'user'>) => {
+    const user = getUser();
 
     return axios.post<{ paymentLink: string }>('/store/purchase', {
       user: JSON.parse(user),
@@ -32,5 +37,13 @@ export function useStoreApi() {
     );
   };
 
-  return { requestPaymenStatus, createOrder };
+  const loadUserBalance = () => {
+    const user = getUser();
+
+    return axios.post<Balance[]>('/store/get-wallet-balances', {
+      user: JSON.parse(user),
+    });
+  };
+
+  return { requestPaymenStatus, createOrder, loadUserBalance };
 }

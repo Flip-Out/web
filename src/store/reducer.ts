@@ -29,6 +29,12 @@ export const reducer: Reducer<AppState, Action> = (state, action): AppState => {
         settings: { ...state.settings, notifications },
       };
     }
+    case ActionType.UPDATE_BALANCES: {
+      return {
+        ...state,
+        user: { ...state.user, balances: action.payload },
+      };
+    }
     default: {
       return state;
     }

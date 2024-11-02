@@ -2,6 +2,9 @@ import React, { createContext } from 'react';
 import { Action, AppState } from '../types';
 
 export const initialState: AppState = {
+  user: {
+    balances: [],
+  },
   settings: {
     isLoading: false,
     notifications: [],
