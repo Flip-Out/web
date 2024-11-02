@@ -43,7 +43,9 @@ function RequestResult({ children, title, message }: RequestResultProps) {
 }
 
 export default function VerifyPurchasePage() {
-  const [status, setStatus] = useState<PurchaseStatus>(PurchaseStatus.PENDING);
+  const [status, setStatus] = useState<PurchaseStatus>(
+    PurchaseStatus.COMPLETED
+  );
   const [searchParams] = useSearchParams();
   const { requestPaymenStatus } = useStoreApi();
 
@@ -61,9 +63,17 @@ export default function VerifyPurchasePage() {
     [isSuccessfull, isLoading]
   );
 
-  const clickTryAgain = () => {};
+  const clickTryAgain = () => {
+    if (parent.closeIframe) {
+      parent.closeIframe();
+    }
+  };
 
-  const clickClose = () => {};
+  const clickClose = () => {
+    if (parent.closeIframe) {
+      parent.closeIframe();
+    }
+  };
 
   useInterval(
     () => {

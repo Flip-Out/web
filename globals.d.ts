@@ -2,6 +2,6 @@ export {};
 
 declare global {
   interface Window {
-    closeIframe: () => void | null;
+    closeIframe: () => void;
   }
 }
