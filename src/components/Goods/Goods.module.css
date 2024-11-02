@@ -2,6 +2,7 @@
   width: 30%;
   padding-bottom: 20px;
   box-sizing: border-box;
+  font-family: OxaniumRegular;
 
   @media (max-width: 680px) {
     max-width: 400px;
@@ -26,12 +27,14 @@
 
 .description {
   font-size: 20px;
+  font-family: OxaniumRegular;
 }
 
 .price {
   display: flex;
   font-size: 18px;
   gap: 3px;
+  font-family: OxaniumRegular;
 }
 
 .discount {
@@ -41,4 +44,5 @@
   color: white;
   min-height: 22px;
   text-transform: uppercase;
+  font-family: OxaniumRegular;
 }

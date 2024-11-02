@@ -8,8 +8,15 @@ export function detectBrowser() {
     return Browser.CHROME;
   }
 
+  const iOS = userAgent.match(/iPad/i) || userAgent.match(/iPhone/i);
+  const webkit = userAgent.match(/WebKit/i);
+  const iOSSafari = iOS && webkit && !userAgent.match(/CriOS/i);
   // Detect Safari
-  if (window.safari || navigator.userAgent.toLowerCase().includes('safari')) {
+  if (
+    window.safari ||
+    navigator.userAgent.toLowerCase().includes('safari') ||
+    iOSSafari
+  ) {
     return Browser.SAFARI;
   }
 

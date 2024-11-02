@@ -1,6 +1,7 @@
 .subscription {
   width: 100%;
   min-width: 100%;
+  font-family: OxaniumRegular;
 }
 
 .subscriptionWrapper {
@@ -26,6 +27,7 @@
   max-width: 47%;
   width: 47%;
   gap: 10px;
+  font-family: OxaniumRegular;
 
   @media (max-width: 870px) {
     width: 100%;
@@ -35,6 +37,7 @@
 }
 
 .detailsTitle {
+  font-family: OxaniumRegular;
   @media (max-width: 870px) {
     text-align: center;
   }
