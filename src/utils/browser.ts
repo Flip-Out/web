@@ -9,7 +9,7 @@ export function detectBrowser() {
   }
 
   // Detect Safari
-  if (window.safari) {
+  if (window.safari || navigator.userAgent.toLowerCase().includes('safari')) {
     return Browser.SAFARI;
   }
 
@@ -35,4 +35,34 @@ export function detectBrowser() {
 
   // Default case if the browser is not recognized
   return Browser.UNKNOWN_BROWSER;
+}
+
+export function isIOS() {
+  return (
+    [
+      'iPad Simulator',
+      'iPhone Simulator',
+      'iPod Simulator',
+      'iPad',
+      'iPhone',
+      'iPod',
+    ].includes(navigator.platform) ||
+    // iPad on iOS 13 detection
+    (navigator.userAgent.includes('Mac') && 'ontouchend' in document)
+  );
+}
+
+export function copyToClipboard(text: string) {
+  if (navigator.clipboard && window.isSecureContext) {
+    navigator.clipboard.writeText(text);
+  } else {
+    const input = document.createElement('input');
+    input.style.display = 'none';
+    document.appendChild(input);
+    input.value = text;
+    input.focus();
+    input.select();
+    document.execCommand('copy');
+    document.removeChild(input);
+  }
 }
