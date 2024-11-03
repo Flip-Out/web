@@ -29,7 +29,11 @@ export function Goods({ goods, handleBuyInit }: GoodsProps) {
   const buyGood = (good: Good) => {
     const amount = good.currency + '00';
     dispatch(updateLoadingState(true));
-    createOrder({ purchase_type: PurchaseType.SINGLE_PAYMENT, amount }).then(
+    createOrder({
+      purchase_type: PurchaseType.SINGLE_PAYMENT,
+      amount,
+      purchaseId: good.id,
+    }).then(
       (data) => {
         handleBuyInit(data?.data.paymentLink || '', good.description);
         dispatch(updateLoadingState(false));

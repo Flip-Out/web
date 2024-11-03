@@ -1,5 +1,10 @@
 import axios from '../lib/axios';
-import { Balance, PaymentConfirmationDto, PurchaseRequestDto } from '../types';
+import {
+  Balance,
+  Good,
+  PaymentConfirmationDto,
+  PurchaseRequestDto,
+} from '../types';
 import { loadFromLocalStorage, LOCAL_STORAGE } from '../utils/localStorage';
 
 export function useStoreApi() {
@@ -16,6 +21,7 @@ export function useStoreApi() {
   const createOrder = async ({
     purchase_type,
     amount,
+    purchaseId,
   }: Omit<PurchaseRequestDto, 'user'>) => {
     const user = getUser();
 
@@ -23,6 +29,7 @@ export function useStoreApi() {
       user: JSON.parse(user),
       purchase_type,
       amount,
+      purchaseId,
     });
   };
 
@@ -42,5 +49,9 @@ export function useStoreApi() {
     });
   };
 
-  return { requestPaymenStatus, createOrder, loadUserBalance };
+  const loadStoreGoods = () => {
+    return axios.get<Good[]>('/store/buy_orders');
+  };
+
+  return { requestPaymenStatus, createOrder, loadUserBalance, loadStoreGoods };
 }

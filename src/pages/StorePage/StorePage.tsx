@@ -1,3 +1,4 @@
+import { Slide } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { AeonModal } from '../../components/AeonModal/AeonModal';
 import { Goods } from '../../components/Goods/Goods';
@@ -28,66 +29,16 @@ const mockSubscriptions: Subscription[] = [
   },
 ];
 
-const mockGoods: Good[] = [
-  {
-    id: 1,
-    description: '10 xPloits',
-    currency: 1,
-    tonCurrency: 1.9,
-    image: '10.png',
-  },
-  {
-    id: 2,
-    description: '100 xPloits',
-    currency: 3,
-    tonCurrency: 19,
-    image: '100.png',
-    discount: '20% off',
-  },
-  {
-    id: 3,
-    description: '500 xPloits',
-    currency: 500,
-    tonCurrency: 95,
-    image: '500.png',
-    discount: '30% off',
-  },
-  {
-    id: 4,
-    description: '1,000 xPloits',
-    currency: 1000,
-    tonCurrency: 190,
-    image: '1000.png',
-    discount: '40% off',
-  },
-  {
-    id: 5,
-    description: '2,000 xPloits',
-    currency: 2000,
-    tonCurrency: 381,
-    image: '2000.png',
-    discount: '50% off',
-  },
-  {
-    id: 6,
-    description: '3,000 xPloits',
-    currency: 3000,
-    tonCurrency: 572,
-    image: '3000.png',
-    discount: '60% off',
-  },
-];
-
 export default function StorePage() {
   const [subscriptions] = useState<Subscription[]>(mockSubscriptions);
-  const [goods] = useState<Good[]>(mockGoods);
+  const [goods, setGoods] = useState<Good[]>([]);
   const [aeonModal, setAeonModal] = useState({
     open: false,
     url: '',
     title: '',
   });
   const { dispatch } = useDispatch();
-  const { loadUserBalance } = useStoreApi();
+  const { loadUserBalance, loadStoreGoods } = useStoreApi();
 
   const handleBuyInit = (url: string, title: string) => {
     if (url) {
@@ -102,22 +53,26 @@ export default function StorePage() {
     );
   };
 
+  const loadBalance = async () => {
+    await loadUserBalance()
+      .then((data) => {
+        dispatch(updateBalances(data.data));
+      })
+      .catch((e) => {
+        dispatch(
+          addNotification({
+            message: e?.message || 'Failed to load user balance',
+            type: 'error',
+          })
+        );
+      });
+  };
+
   const addCloseIframe = () => {
     window.closeIframe = () => {
       handleCloseAeonModal();
       window.closeIframe = () => {};
-      loadUserBalance()
-        .then((data) => {
-          dispatch(updateBalances(data.data));
-        })
-        .catch((e) => {
-          dispatch(
-            addNotification({
-              message: e?.message || 'Failed to load user balance',
-              type: 'error',
-            })
-          );
-        });
+      loadBalance();
     };
   };
 
@@ -128,9 +83,22 @@ export default function StorePage() {
       setAeonModal({ open: true, url, title });
       addCloseIframe();
     }
+    loadStoreGoods()
+      .then((data) => {
+        setGoods(data.data);
+      })
+      .catch((e) => {
+        dispatch(
+          addNotification({
+            message: e?.message || 'Failed to load user goods',
+            type: 'error',
+          })
+        );
+      });
   }, []);
 
   const handleCloseAeonModal = () => {
+    loadBalance();
     removeFromLocalStorage(LOCAL_STORAGE.AEON_URL);
     removeFromLocalStorage(LOCAL_STORAGE.AEON_TITLE);
     setAeonModal({ open: false, url: '', title: '' });
@@ -142,9 +110,11 @@ export default function StorePage() {
         <Subscriptions subscriptions={subscriptions} />
       </div>
       <div className={styles.title}>all goods</div>
-      <div className={styles.goods}>
-        <Goods goods={goods} handleBuyInit={handleBuyInit} />
-      </div>
+      <Slide direction="right" in={goods.length > 0} mountOnEnter unmountOnExit>
+        <div className={styles.goods}>
+          <Goods goods={goods} handleBuyInit={handleBuyInit} />
+        </div>
+      </Slide>
       <AeonModal
         open={aeonModal.open}
         url={aeonModal.url}

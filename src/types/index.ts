@@ -35,6 +35,7 @@ export interface PurchaseRequestDto {
   user: TelegramAuthData;
   purchase_type: PurchaseType;
   amount: string;
+  purchaseId: number;
 }
 
 export interface Notification {
