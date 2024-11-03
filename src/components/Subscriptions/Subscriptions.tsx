@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react';
 import Cash from '../../assets/Cash';
 import Crystals from '../../assets/Crystals';
 import InternalCurrency from '../../assets/InternalCurrency';
@@ -7,12 +8,20 @@ import { GenericProps, Subscription } from '../../types';
 import { Button } from '../Button/Button';
 import { Card } from '../Card/Card';
 import styles from './Subscriptions.module.css';
+import { loadFromLocalStorage, LOCAL_STORAGE } from '../../utils/localStorage';
 
 interface SubscriptionProps extends GenericProps {
   subscriptions: Array<Subscription>;
 }
 
 export function Subscriptions({ subscriptions }: SubscriptionProps) {
+  const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
+
+  useEffect(() => {
+    const user = loadFromLocalStorage(LOCAL_STORAGE.TELEGRAM_AUTH_DATA);
+    setIsLoggedIn(!user);
+  }, []);
+
   const subscribe = () => {
     console.log('subscribe');
   };
@@ -48,7 +57,9 @@ export function Subscriptions({ subscriptions }: SubscriptionProps) {
             <div>{subscription.tonCurrency}</div>
             <TonCurrency className={styles.payIcon} />
           </div>
-          <Button handleClick={subscribe}>subscribe</Button>
+          <Button handleClick={subscribe} disabled={isLoggedIn}>
+            subscribe
+          </Button>
         </div>
       </div>
     </Card>

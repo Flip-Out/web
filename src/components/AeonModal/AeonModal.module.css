@@ -7,6 +7,7 @@
   min-height: 100%;
   background: rgba(0, 0, 0, 1);
   overflow: hidden;
+  font-family: OxaniumRegular;
 }
 
 .iframe {
@@ -17,4 +18,8 @@
 
 iframe * {
   margin: 0;
+}
+
+.title {
+  font-size: 20px;
 }

@@ -8,22 +8,30 @@ import { Card } from '../Card/Card';
 import styles from './Goods.module.css';
 import InternalCurrency from '../../assets/InternalCurrency';
 import TonCurrency from '../../assets/TonCurrency';
+import { useEffect, useState } from 'react';
+import { loadFromLocalStorage, LOCAL_STORAGE } from '../../utils/localStorage';
 
 interface GoodsProps extends GenericProps {
   goods: Array<Good>;
-  handleBuyInit: (url: string) => void;
+  handleBuyInit: (url: string, title: string) => void;
 }
 
 export function Goods({ goods, handleBuyInit }: GoodsProps) {
   const { createOrder } = useStoreApi();
   const { dispatch } = useDispatch();
+  const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
 
-  const buyGood = (currency: number) => {
-    const amount = currency + '00';
+  useEffect(() => {
+    const user = loadFromLocalStorage(LOCAL_STORAGE.TELEGRAM_AUTH_DATA);
+    setIsLoggedIn(!user);
+  }, []);
+
+  const buyGood = (good: Good) => {
+    const amount = good.currency + '00';
     dispatch(updateLoadingState(true));
     createOrder({ purchase_type: PurchaseType.SINGLE_PAYMENT, amount }).then(
       (data) => {
-        handleBuyInit(data?.data.paymentLink || '');
+        handleBuyInit(data?.data.paymentLink || '', good.description);
         dispatch(updateLoadingState(false));
       },
       (e) =>
@@ -78,7 +86,8 @@ export function Goods({ goods, handleBuyInit }: GoodsProps) {
             </Box>
             <Button
               className={styles.button}
-              handleClick={() => buyGood(good.currency)}
+              handleClick={() => buyGood(good)}
+              disabled={isLoggedIn}
             >
               buy
             </Button>

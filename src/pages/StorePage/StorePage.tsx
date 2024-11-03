@@ -81,14 +81,19 @@ const mockGoods: Good[] = [
 export default function StorePage() {
   const [subscriptions] = useState<Subscription[]>(mockSubscriptions);
   const [goods] = useState<Good[]>(mockGoods);
-  const [aeonModal, setAeonModal] = useState({ open: false, url: '' });
+  const [aeonModal, setAeonModal] = useState({
+    open: false,
+    url: '',
+    title: '',
+  });
   const { dispatch } = useDispatch();
   const { loadUserBalance } = useStoreApi();
 
-  const handleBuyInit = (url: string) => {
+  const handleBuyInit = (url: string, title: string) => {
     if (url) {
       saveToLocalStorage(LOCAL_STORAGE.AEON_URL, url);
-      setAeonModal({ open: true, url });
+      saveToLocalStorage(LOCAL_STORAGE.AEON_TITLE, title);
+      setAeonModal({ open: true, url, title });
       addCloseIframe();
       return;
     }
@@ -118,15 +123,17 @@ export default function StorePage() {
 
   useEffect(() => {
     const url = loadFromLocalStorage<string>(LOCAL_STORAGE.AEON_URL);
-    if (url) {
-      setAeonModal({ open: true, url });
+    const title = loadFromLocalStorage<string>(LOCAL_STORAGE.AEON_TITLE);
+    if (url && title) {
+      setAeonModal({ open: true, url, title });
       addCloseIframe();
     }
   }, []);
 
   const handleCloseAeonModal = () => {
     removeFromLocalStorage(LOCAL_STORAGE.AEON_URL);
-    setAeonModal({ open: false, url: '' });
+    removeFromLocalStorage(LOCAL_STORAGE.AEON_TITLE);
+    setAeonModal({ open: false, url: '', title: '' });
   };
 
   return (
@@ -141,6 +148,7 @@ export default function StorePage() {
       <AeonModal
         open={aeonModal.open}
         url={aeonModal.url}
+        title={aeonModal.title}
         onCLose={handleCloseAeonModal}
       />
     </div>

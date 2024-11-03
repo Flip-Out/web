@@ -21,9 +21,8 @@ export default function UserInfo() {
   }, []);
 
   const handleAuthCallback = (data: TelegramAuthData) => {
-    console.log(data);
     saveToLocalStorage(LOCAL_STORAGE.TELEGRAM_AUTH_DATA, JSON.stringify(data));
-    setUser(data);
+    location.reload();
   };
   return (
     <>

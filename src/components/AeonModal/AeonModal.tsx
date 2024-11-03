@@ -5,10 +5,11 @@ import { Close } from '@material-ui/icons';
 interface AeonModalProps {
   open: boolean;
   url: string;
+  title: string;
   onCLose?: () => void;
 }
 
-export function AeonModal({ open, onCLose, url }: AeonModalProps) {
+export function AeonModal({ open, onCLose, url, title }: AeonModalProps) {
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down('md'));
 
@@ -23,10 +24,13 @@ export function AeonModal({ open, onCLose, url }: AeonModalProps) {
       <Box display="flex" flexDirection="column" className={styles.wrapper}>
         <Box
           display="flex"
-          justifyContent="flex-end"
+          justifyContent="space-between"
+          alignItems="center"
           width="100%"
           color="white"
+          padding="0px 10px"
         >
+          <span className={styles.title}>{title}</span>
           <Button onClick={onCLose} color="inherit">
             <Close color="inherit" />
           </Button>
