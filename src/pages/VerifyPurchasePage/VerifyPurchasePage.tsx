@@ -1,13 +1,13 @@
 import { CheckCircle, Error } from '@material-ui/icons';
 import { Box, CircularProgress, Fade } from '@mui/material';
+import classnames from 'classnames';
 import { useMemo, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
+import { Button } from '../../components/Button/Button';
 import { useInterval } from '../../hooks/useIntercall';
 import { useStoreApi } from '../../hooks/useStoreApi';
 import { GenericProps, PurchaseStatus } from '../../types';
 import styles from './VerifyPurchasePage.module.css';
-import { Button } from '../../components/Button/Button';
-import classnames from 'classnames';
 
 interface RequestResultProps extends GenericProps {
   title: string;
@@ -54,7 +54,13 @@ export default function VerifyPurchasePage() {
     [status]
   );
 
-  const isLoading = useMemo(() => status === PurchaseStatus.PENDING, [status]);
+  const isLoading = useMemo(
+    () =>
+      status === PurchaseStatus.PENDING ||
+      status === PurchaseStatus.INIT ||
+      status === PurchaseStatus.PROCESSING,
+    [status]
+  );
 
   const isFailed = useMemo(
     () => !isLoading && !isSuccessfull,
@@ -92,7 +98,7 @@ export default function VerifyPurchasePage() {
       }
     },
     // Delay in milliseconds or null to stop it
-    status === PurchaseStatus.PENDING ? 5000 : null
+    isLoading ? 5000 : null
   );
 
   return (
@@ -132,11 +138,23 @@ export default function VerifyPurchasePage() {
         <Fade in>
           <Box
             display="flex"
+            flexDirection="column"
             justifyContent="center"
             alignItems="center"
             className={styles.loader}
+            gap="15px"
           >
             <CircularProgress color="inherit" />
+            {status === PurchaseStatus.INIT && (
+              <Box width="80%" textAlign="center">
+                Purchase was inititialized. Please finish your payment.
+              </Box>
+            )}
+            {status === PurchaseStatus.PROCESSING && (
+              <Box width="80%" textAlign="center">
+                Purchase is processing. Please wait.
+              </Box>
+            )}
           </Box>
         </Fade>
       )}

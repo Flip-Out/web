@@ -69,6 +69,8 @@ export type Action =
 
 export enum PurchaseStatus {
   PENDING = 'PENDING',
+  INIT = 'INIT',
+  PROCESSING = 'PROCESSING',
   COMPLETED = 'COMPLETED',
   CLOSE = 'CLOSE',
   TIMEOUT = 'TIMEOUT',
@@ -91,4 +93,11 @@ export enum Browser {
   OPERA = 'OPERA',
   INTERNET_EXPLORER = 'INTERNET_EXPLORER',
   UNKNOWN_BROWSER = 'UNKNOWN_BROWSER',
+}
+
+export interface PaymentConfirmationDto {
+  paymentUrl: string;
+  amount: string;
+  date: string; // Date
+  purchaseStatus: PurchaseStatus;
 }

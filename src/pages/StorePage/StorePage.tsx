@@ -1,18 +1,18 @@
 import { useEffect, useState } from 'react';
-import { Good, Subscription } from '../../types';
-import styles from './StorePage.module.css';
-import { Subscriptions } from '../../components/Subscriptions/Subscriptions';
-import { Goods } from '../../components/Goods/Goods';
 import { AeonModal } from '../../components/AeonModal/AeonModal';
-import { useDispatch } from '../../store/dispatch';
+import { Goods } from '../../components/Goods/Goods';
+import { Subscriptions } from '../../components/Subscriptions/Subscriptions';
+import { useStoreApi } from '../../hooks/useStoreApi';
 import { addNotification, updateBalances } from '../../store/actions';
+import { useDispatch } from '../../store/dispatch';
+import { Good, Subscription } from '../../types';
 import {
   loadFromLocalStorage,
   LOCAL_STORAGE,
   removeFromLocalStorage,
   saveToLocalStorage,
 } from '../../utils/localStorage';
-import { useStoreApi } from '../../hooks/useStoreApi';
+import styles from './StorePage.module.css';
 
 const mockSubscriptions: Subscription[] = [
   {

@@ -1,5 +1,5 @@
 import axios from '../lib/axios';
-import { Balance, PurchaseRequestDto, PurchaseStatus } from '../types';
+import { Balance, PaymentConfirmationDto, PurchaseRequestDto } from '../types';
 import { loadFromLocalStorage, LOCAL_STORAGE } from '../utils/localStorage';
 
 export function useStoreApi() {
@@ -27,14 +27,11 @@ export function useStoreApi() {
   };
 
   const requestPaymenStatus = (orderId: string) => {
-    return axios.get<{ purchaseStatus: PurchaseStatus }>(
-      '/store/purchase/confirm',
-      {
-        params: {
-          orderId,
-        },
-      }
-    );
+    return axios.get<PaymentConfirmationDto>('/store/purchase/confirm', {
+      params: {
+        orderId,
+      },
+    });
   };
 
   const loadUserBalance = () => {
