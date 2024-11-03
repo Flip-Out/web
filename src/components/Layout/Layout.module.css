@@ -3,8 +3,11 @@
   flex-direction: column;
   width: 100vw;
   height: 100vh;
-  background: linear-gradient(180deg, #00000000, black),
-    url('/store_background.svg');
+  background-image: image-set(
+    url('/store_background-min.png') 1x,
+    url('/store_background.png') 1x,
+    url('/store_background.svg') 1x
+  );
   background-size: cover;
   background-position: center;
   color: white;
