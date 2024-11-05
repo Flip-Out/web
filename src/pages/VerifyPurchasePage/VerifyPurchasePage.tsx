@@ -1,7 +1,7 @@
 import { CheckCircle, Error } from '@material-ui/icons';
 import { Box, CircularProgress, Fade } from '@mui/material';
 import classnames from 'classnames';
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { Button } from '../../components/Button/Button';
 import { useInterval } from '../../hooks/useIntercall';
@@ -79,25 +79,34 @@ export default function VerifyPurchasePage() {
     }
   };
 
+  const getStatus = (orderId: string) =>
+    requestPaymenStatus(orderId).then(
+      ({ data: { purchaseStatus } }) => {
+        if (purchaseStatus !== PurchaseStatus.PENDING) {
+          setStatus(purchaseStatus);
+        }
+      },
+      (e) => {
+        console.error(e?.message || 'Something went wrong.');
+      }
+    );
+
+  useEffect(() => {
+    const orderId = searchParams.get('orderId');
+
+    if (orderId) {
+      getStatus(orderId);
+    }
+  }, []);
+
   useInterval(
     () => {
-      // Your custom logic here
       const orderId = searchParams.get('orderId');
 
       if (orderId) {
-        requestPaymenStatus(orderId).then(
-          ({ data: { purchaseStatus } }) => {
-            if (purchaseStatus !== PurchaseStatus.PENDING) {
-              setStatus(purchaseStatus);
-            }
-          },
-          (e) => {
-            console.error(e?.message || 'Something went wrong.');
-          }
-        );
+        getStatus(orderId);
       }
     },
-    // Delay in milliseconds or null to stop it
     isLoading ? 5000 : null
   );
 
