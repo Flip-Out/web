@@ -22,6 +22,7 @@ export default function Layout() {
 
   return (
     <div className={styles.content}>
+      <img src="/store_background.svg" className={styles.backgroundImage} />
       <Header />
       <main className={styles.main}>
         <Outlet />

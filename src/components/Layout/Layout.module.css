@@ -3,15 +3,21 @@
   flex-direction: column;
   width: 100vw;
   height: 100vh;
-  background-image: image-set(
-    url('/store_background-min.png') 1x,
-    url('/store_background.png') 1x,
-    url('/store_background.svg') 1x
-  );
   background-size: cover;
   background-position: center;
   color: white;
   font-family: OxaniumRegular;
+}
+
+.backgroundImage {
+  position: absolute;
+  z-index: -1;
+  width: 100vw;
+  height: 100vh;
+  background-size: cover;
+  background-position: center;
+  background-image: url('/store_background-init.png');
+  object-fit: cover;
 }
 
 .main {
