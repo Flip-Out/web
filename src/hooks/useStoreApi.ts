@@ -43,28 +43,42 @@ export function useStoreApi() {
   };
 
   const loadUserBalance = () => {
-    const user = getUser();
+    try {
+      const user = getUser();
 
-    return axios.post<Balance[]>('/store/get-wallet-balances', {
-      user: JSON.parse(user),
-    });
+      return axios.post<Balance[]>('/store/get-wallet-balances', {
+        user: JSON.parse(user),
+      });
+    } catch (message) {
+      return Promise.reject({ message });
+    }
   };
 
   const loadStoreGoods = () => {
-    return axios.get<Good[]>('/store/buy_orders');
+    try {
+      getUser();
+
+      return axios.get<Good[]>('/store/buy_orders');
+    } catch (message) {
+      return Promise.reject({ message });
+    }
   };
 
   const loadStoreSubscrptions = () => {
-    const user = JSON.parse(getUser());
+    try {
+      const user = JSON.parse(getUser());
 
-    return axios.get<{
-      subscriptions: Subscription[];
-      activeSubscriptions: number[];
-    }>('/store/buy_subscriptions', {
-      params: {
-        id: user.id,
-      },
-    });
+      return axios.get<{
+        subscriptions: Subscription[];
+        activeSubscriptions: number[];
+      }>('/store/buy_subscriptions', {
+        params: {
+          id: user.id,
+        },
+      });
+    } catch (message) {
+      return Promise.reject({ message });
+    }
   };
 
   return {

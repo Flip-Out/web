@@ -76,6 +76,10 @@ export default function StorePage() {
         setGoods(data.data);
       })
       .catch((e) => {
+        if (e.message) {
+          console.error(e.message);
+          return;
+        }
         dispatch(
           addNotification({
             message: e?.message || 'Failed to load user goods',
@@ -90,6 +94,10 @@ export default function StorePage() {
         setActiveSubscriptions(data.data.activeSubscriptions);
       })
       .catch((e) => {
+        if (e.message) {
+          console.error(e.message);
+          return;
+        }
         dispatch(
           addNotification({
             message: e?.message || 'Failed to load user subscriptions',
