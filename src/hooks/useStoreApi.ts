@@ -14,9 +14,9 @@ export function useStoreApi() {
       LOCAL_STORAGE.TELEGRAM_AUTH_DATA
     ) as string;
     if (!user) {
-      throw new Error('User not found');
+      return {};
     }
-    return user;
+    return JSON.parse(user);
   };
 
   const createOrder = async ({
@@ -43,42 +43,28 @@ export function useStoreApi() {
   };
 
   const loadUserBalance = () => {
-    try {
-      const user = getUser();
+    const user = getUser();
 
-      return axios.post<Balance[]>('/store/get-wallet-balances', {
-        user: JSON.parse(user),
-      });
-    } catch (message) {
-      return Promise.reject({ message });
-    }
+    return axios.post<Balance[]>('/store/get-wallet-balances', {
+      user,
+    });
   };
 
   const loadStoreGoods = () => {
-    try {
-      getUser();
-
-      return axios.get<Good[]>('/store/buy_orders');
-    } catch (message) {
-      return Promise.reject({ message });
-    }
+    return axios.get<Good[]>('/store/buy_orders');
   };
 
   const loadStoreSubscrptions = () => {
-    try {
-      const user = JSON.parse(getUser());
+    const user = getUser();
 
-      return axios.get<{
-        subscriptions: Subscription[];
-        activeSubscriptions: number[];
-      }>('/store/buy_subscriptions', {
-        params: {
-          id: user.id,
-        },
-      });
-    } catch (message) {
-      return Promise.reject({ message });
-    }
+    return axios.get<{
+      subscriptions: Subscription[];
+      activeSubscriptions: number[];
+    }>('/store/buy_subscriptions', {
+      params: {
+        id: user.id,
+      },
+    });
   };
 
   return {
