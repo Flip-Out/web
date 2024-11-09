@@ -55,7 +55,16 @@ export function useStoreApi() {
   };
 
   const loadStoreSubscrptions = () => {
-    return axios.get<Subscription[]>('/store/buy_subscriptions');
+    const user = JSON.parse(getUser());
+
+    return axios.get<{
+      subscriptions: Subscription[];
+      activeSubscriptions: number[];
+    }>('/store/buy_subscriptions', {
+      params: {
+        id: user.id,
+      },
+    });
   };
 
   return {

@@ -15,12 +15,14 @@ import { addNotification, updateLoadingState } from '../../store/actions';
 
 interface SubscriptionProps extends GenericProps {
   subscriptions: Array<Subscription>;
+  activeSubscriptions: Array<number>;
   handleBuyInit: (url: string, title: string) => void;
 }
 
 export function Subscriptions({
   subscriptions,
   handleBuyInit,
+  activeSubscriptions,
 }: SubscriptionProps) {
   const { createOrder } = useStoreApi();
   const { dispatch } = useDispatch();
@@ -88,9 +90,13 @@ export function Subscriptions({
           </div>
           <Button
             handleClick={() => subscribe(subscription)}
-            disabled={isLoggedIn}
+            disabled={
+              isLoggedIn || activeSubscriptions.includes(subscription.id)
+            }
           >
-            subscribe
+            {activeSubscriptions.includes(subscription.id)
+              ? 'subscribed'
+              : 'subscribe'}
           </Button>
         </div>
       </div>

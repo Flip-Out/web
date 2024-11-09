@@ -18,6 +18,7 @@ import styles from './StorePage.module.css';
 export default function StorePage() {
   const [goods, setGoods] = useState<Good[]>([]);
   const [subscriptions, setSubscriptions] = useState<Subscription[]>([]);
+  const [activeSubscriptions, setActiveSubscriptions] = useState<number[]>([]);
   const [aeonModal, setAeonModal] = useState({
     open: false,
     url: '',
@@ -85,7 +86,8 @@ export default function StorePage() {
 
     loadStoreSubscrptions()
       .then((data) => {
-        setSubscriptions(data.data);
+        setSubscriptions(data.data.subscriptions);
+        setActiveSubscriptions(data.data.activeSubscriptions);
       })
       .catch((e) => {
         dispatch(
@@ -109,6 +111,7 @@ export default function StorePage() {
       <div className={styles.subscriptions}>
         <Subscriptions
           subscriptions={subscriptions}
+          activeSubscriptions={activeSubscriptions}
           handleBuyInit={handleBuyInit}
         />
       </div>
