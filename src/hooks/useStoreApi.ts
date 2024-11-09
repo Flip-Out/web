@@ -4,6 +4,7 @@ import {
   Good,
   PaymentConfirmationDto,
   PurchaseRequestDto,
+  Subscription,
 } from '../types';
 import { loadFromLocalStorage, LOCAL_STORAGE } from '../utils/localStorage';
 
@@ -53,5 +54,15 @@ export function useStoreApi() {
     return axios.get<Good[]>('/store/buy_orders');
   };
 
-  return { requestPaymenStatus, createOrder, loadUserBalance, loadStoreGoods };
+  const loadStoreSubscrptions = () => {
+    return axios.get<Subscription[]>('/store/buy_subscriptions');
+  };
+
+  return {
+    requestPaymenStatus,
+    createOrder,
+    loadUserBalance,
+    loadStoreGoods,
+    loadStoreSubscrptions,
+  };
 }

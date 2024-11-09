@@ -15,30 +15,17 @@ import {
 } from '../../utils/localStorage';
 import styles from './StorePage.module.css';
 
-const mockSubscriptions: Subscription[] = [
-  {
-    id: 1,
-    power: 200,
-    crystals: 50,
-    cash: 2,
-    details: 'Subscribe to the flipout weekly pack',
-    additionalInfo: 'Receive daily',
-    currency: 25,
-    tonCurrency: 15,
-    frequency: 'per day',
-  },
-];
-
 export default function StorePage() {
-  const [subscriptions] = useState<Subscription[]>(mockSubscriptions);
   const [goods, setGoods] = useState<Good[]>([]);
+  const [subscriptions, setSubscriptions] = useState<Subscription[]>([]);
   const [aeonModal, setAeonModal] = useState({
     open: false,
     url: '',
     title: '',
   });
   const { dispatch } = useDispatch();
-  const { loadUserBalance, loadStoreGoods } = useStoreApi();
+  const { loadUserBalance, loadStoreGoods, loadStoreSubscrptions } =
+    useStoreApi();
 
   const handleBuyInit = (url: string, title: string) => {
     if (url) {
@@ -95,6 +82,19 @@ export default function StorePage() {
           })
         );
       });
+
+    loadStoreSubscrptions()
+      .then((data) => {
+        setSubscriptions(data.data);
+      })
+      .catch((e) => {
+        dispatch(
+          addNotification({
+            message: e?.message || 'Failed to load user subscriptions',
+            type: 'error',
+          })
+        );
+      });
   }, []);
 
   const handleCloseAeonModal = () => {
@@ -107,7 +107,10 @@ export default function StorePage() {
   return (
     <div className={styles.store}>
       <div className={styles.subscriptions}>
-        <Subscriptions subscriptions={subscriptions} />
+        <Subscriptions
+          subscriptions={subscriptions}
+          handleBuyInit={handleBuyInit}
+        />
       </div>
       <div className={styles.title}>all goods</div>
       <Slide direction="right" in={goods.length > 0} mountOnEnter unmountOnExit>

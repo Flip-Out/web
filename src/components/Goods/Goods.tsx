@@ -38,13 +38,15 @@ export function Goods({ goods, handleBuyInit }: GoodsProps) {
         handleBuyInit(data?.data.paymentLink || '', good.description);
         dispatch(updateLoadingState(false));
       },
-      (e) =>
+      (e) => {
         dispatch(
           addNotification({
             message: e?.message || 'Something went wrong.',
             type: 'error',
           })
-        )
+        );
+        dispatch(updateLoadingState(false));
+      }
     );
   };
 
@@ -70,7 +72,7 @@ export function Goods({ goods, handleBuyInit }: GoodsProps) {
               <div>{good.currency}</div>
               <InternalCurrency className={styles.payIcon} />
               <>/</>
-              <div>{good.tonCurrency}</div>
+              <div>{Number(good.tonCurrency)}</div>
               <TonCurrency className={styles.payIcon} />
             </Box>
           </Box>

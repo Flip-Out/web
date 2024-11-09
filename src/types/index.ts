@@ -7,15 +7,17 @@ export interface GenericProps {
 
 export interface Subscription {
   id: number;
-  power: number;
-  crystals: number;
-  cash: number;
+  xploit: number;
+  chip: number;
+  items: number;
   details: string;
   additionalInfo: string;
-  frequency: string;
   currency: number;
   tonCurrency: number;
+  frequency: FrequencyType;
 }
+
+export type FrequencyType = 'DAILY' | 'WEEKLY' | 'MONTHLY';
 
 export interface Good {
   id: number;
