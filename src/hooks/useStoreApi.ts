@@ -27,7 +27,7 @@ export function useStoreApi() {
     const user = getUser();
 
     return axios.post<{ paymentLink: string }>('/store/purchase', {
-      user: JSON.parse(user),
+      user,
       purchase_type,
       amount,
       purchaseId,
