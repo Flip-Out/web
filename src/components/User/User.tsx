@@ -46,6 +46,9 @@ export default function User({ user }: UserProps) {
         dispatch(updateBalances(data.data));
       })
       .catch((e) => {
+        if (e?.message === '429') {
+          return;
+        }
         dispatch(
           addNotification({
             message: e?.message || 'Failed to load user balance',

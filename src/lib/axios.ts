@@ -19,6 +19,9 @@ axios.interceptors.response.use(
         console.log(`User not authorized ${err}`);
       }
     }
+    if (error.response.status === 429) {
+      throw new Error(error.response.status);
+    }
     throw error;
   }
 );
