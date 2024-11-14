@@ -1,0 +1,120 @@
+name: Build and Publish Docker Image
+
+on:
+    push:
+        branches:
+            - develop
+            - main
+
+jobs:
+    build:
+        runs-on: ubuntu-latest
+        env:
+          TERRAFORM_VERSION: 1.9.6
+          AWS_ACCESS_KEY_ID: ${{ secrets.CI_AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.CI_AWS_SECRET_ACCESS_KEY }}
+          AWS_DEFAULT_REGION: ${{ vars.CI_AWS_DEFAULT_REGION }}
+          AWS_REGION: ${{ vars.CI_AWS_DEFAULT_REGION }}
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CI_CLOUDFLARE_API_TOKEN }}
+
+        steps:
+            - name: Checkout repository
+              uses: actions/checkout@v3
+              with:
+                fetch-depth: 0
+
+            - name: Set ENV_NAME based on branch
+              run: |
+                if [[ "${{ github.ref_name }}" == "main" ]]; then
+                  echo "ENV_NAME=prod" >> $GITHUB_ENV
+                  echo "ECR_REPOSITORY=flip-out-store-prod" >> $GITHUB_ENV
+                  echo "INFRA_GPG_KEY=${{ secrets.INFRA_SECRETS_KEY_PROD }}" >> $GITHUB_ENV
+                elif [[ "${{ github.ref_name }}" == "develop" ]]; then
+                  echo "ENV_NAME=dev" >> $GITHUB_ENV
+                  echo "ECR_REPOSITORY=flip-out-store-dev" >> $GITHUB_ENV
+                  echo "INFRA_GPG_KEY=${{ secrets.INFRA_SECRETS_KEY_DEV }}" >> $GITHUB_ENV
+                else
+                  echo "Branch not recognized. No environment set."
+                fi
+            - name: Setup Terraform
+              uses: hashicorp/setup-terraform@v2
+              with:
+                terraform_version: ${{ env.TERRAFORM_VERSION }}
+            - name: Overwrite ecr state.tf file
+              run: |
+                echo "
+                terraform {
+                    backend \"s3\" {
+                      bucket = \"flipout-terraform-state\"
+                      key    = \"flip-out-web-$ENV_NAME/terraform.tfstate\"
+                      region = \"eu-west-1\"
+                  }
+                }
+                " > .devops/terraform/ecr/state.tf
+                cat .devops/terraform/ecr/state.tf
+
+            - name: Initialize ECR Terraform
+              run: terraform -chdir=".devops/terraform/ecr" init
+
+            - name: Terraform ECR Plan
+              run: terraform -chdir=".devops/terraform/ecr" plan -var "deploy_env=$ENV_NAME" -out=tfplan
+
+            - name: Terraform ECR Apply
+              run: terraform -chdir=".devops/terraform/ecr" apply -auto-approve tfplan
+
+            - name: Calculate Version
+              id: version
+              run: |
+                repo_name="flp-web"
+                major=1
+                total_commits=$(git rev-list --count HEAD)
+                minor=$((total_commits / 100))
+                patch=$((total_commits % 100))
+                commit_hash=$(git rev-parse --short=5 HEAD)
+                version="${repo_name}-${major}.${minor}.${patch}-${commit_hash}"
+                echo "version.total_commits=${total_commits}"
+                echo "VERSION=${version}" >> $GITHUB_ENV
+
+            - name: Login to Amazon ECR
+              id: login-ecr
+              uses: aws-actions/amazon-ecr-login@62f4f872db3836360b72999f4b87f1ff13310f3a
+
+            - name: Set up Docker Buildx
+              uses: docker/setup-buildx-action@v3
+
+            - name: Set up QEMU
+              uses: docker/setup-qemu-action@v3
+
+            - name: Build, tag, and push image to Amazon ECR
+              id: build-image
+              env:
+                ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+              run: |
+                # Build a docker container and
+                # push it to ECR so that it can
+                # be deployed to ECS.
+                docker build --build-arg APP_ENV=$ENV_NAME --build-arg INFRA_GPG_KEY=$INFRA_GPG_KEY -t $ECR_REGISTRY/$ECR_REPOSITORY:$VERSION .
+                docker push $ECR_REGISTRY/$ECR_REPOSITORY:$VERSION
+                echo "IMAGE_TAG=$ECR_REGISTRY/$ECR_REPOSITORY:$VERSION" >> $GITHUB_ENV
+                
+            - name: Overwrite ecs state.tf file
+              run: |
+                echo "
+                terraform {
+                    backend \"s3\" {
+                      bucket = \"flipout-terraform-state\"
+                      key    = \"flip-out-web-ecs-$ENV_NAME/terraform.tfstate\"
+                      region = \"eu-west-1\"
+                  }
+                }
+                " > .devops/terraform/ecs/state.tf
+                cat .devops/terraform/ecs/state.tf
+
+            - name: Initialize ECR Terraform
+              run: terraform -chdir=".devops/terraform/ecs" init
+
+            - name: Terraform ECR Plan
+              run: terraform -chdir=".devops/terraform/ecs" plan -var "deploy_env=$ENV_NAME" -var "image_tag=$IMAGE_TAG" -out=tfplan
+
+            - name: Terraform ECR Apply
+              run: terraform -chdir=".devops/terraform/ecs" apply -auto-approve tfplan

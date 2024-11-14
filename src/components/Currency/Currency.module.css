@@ -1,0 +1,30 @@
+.currency {
+  display: flex;
+  gap: 40px;
+  font-weight: 500;
+  font-size: 16px;
+}
+
+.details {
+  display: flex;
+  gap: 10px;
+  position: relative;
+}
+
+.icon {
+  position: absolute;
+  transform: translate(-75%, -35%);
+}
+
+.iconRevert {
+  position: absolute;
+  transform: translate(30%, -35%);
+}
+
+.pink {
+  color: rgba(255, 77, 195, 1);
+}
+
+.orange {
+  color: rgba(242, 132, 36, 1);
+}

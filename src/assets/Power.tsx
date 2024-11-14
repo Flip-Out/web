@@ -1,4 +1,4 @@
-export default function Power() {
+export default function Power({ className }: { className: string }) {
   return (
     <svg
       width="56"
@@ -6,6 +6,7 @@ export default function Power() {
       viewBox="0 0 56 45"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
+      className={className}
     >
       <g filter="url(#filter0_d_1273_5175)">
         <path
@@ -33,9 +34,9 @@ export default function Power() {
           width="56"
           height="56"
           filterUnits="userSpaceOnUse"
-          color-interpolation-filters="sRGB"
+          colorInterpolationFilters="sRGB"
         >
-          <feFlood flood-opacity="0" result="BackgroundImageFix" />
+          <feFlood floodOpacity="0" result="BackgroundImageFix" />
           <feColorMatrix
             in="SourceAlpha"
             type="matrix"

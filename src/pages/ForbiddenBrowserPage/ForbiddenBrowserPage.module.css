@@ -1,0 +1,43 @@
+.background {
+  width: 100vw;
+  height: 100vh;
+  font-family: OxaniumRegular;
+  font-size: 16px;
+  background-color: black;
+  padding: 20px;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  color: white;
+  background: linear-gradient(180deg, #00000000, black),
+    url('/store_background.svg');
+  background-size: cover;
+  background-position: center;
+  padding-bottom: 30px;
+  font-size: 16px;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  height: 60px;
+  padding: 0 15px;
+  box-sizing: border-box;
+  background: linear-gradient(
+    to right,
+    rgba(48, 238, 227, 0.15),
+    rgba(48, 238, 227, 0.3),
+    rgba(48, 238, 227, 0.15)
+  );
+  min-height: 60px;
+  width: 100%;
+}
+
+.button {
+  width: 160px;
+}
+
+.footer {
+  color: rgba(96, 98, 100, 1);
+  font-size: 16px;
+}

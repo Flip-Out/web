@@ -1,0 +1,52 @@
+.button {
+  position: relative;
+  text-decoration: none;
+  color: rgba(1, 14, 13, 1);
+  text-transform: uppercase;
+  font-size: 20px;
+  width: 210px;
+  height: 30px;
+  padding: 5px 0px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  background-color: #fff;
+  overflow: hidden;
+  border-radius: 6px;
+  clip-path: polygon(
+    0% 0%,
+    calc(100% - 10px) 0%,
+    100% 10px,
+    100% 100%,
+    10px 100%,
+    0% calc(100% - 10px)
+  );
+  cursor: pointer;
+  gap: 5px;
+}
+
+.disabled {
+  background-color: rgb(158, 155, 155);
+  cursor: not-allowed;
+}
+
+.button:before,
+.button:after {
+  content: '';
+  position: absolute;
+  background: rgba(1, 14, 13, 1);
+  height: calc(100% / 3);
+  width: 1px;
+  transform: rotate(-46deg);
+}
+
+.button:before {
+  top: 0%;
+  left: 97%;
+}
+
+.button:after {
+  bottom: -1%;
+  left: 3%;
+}

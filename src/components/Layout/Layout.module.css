@@ -3,13 +3,36 @@
   flex-direction: column;
   width: 100vw;
   height: 100vh;
-  background: linear-gradient(180deg, #00000000, black),
-    url(store_background.svg);
   background-size: cover;
   background-position: center;
+  color: white;
+  font-family: OxaniumRegular;
+}
+
+.backgroundImage {
+  position: absolute;
+  z-index: -1;
+  width: 100vw;
+  height: 100vh;
+  background-size: cover;
+  background-position: center;
+  background-image: url('/store_background-init.png');
+  object-fit: cover;
 }
 
 .main {
   display: flex;
   flex-grow: 1;
+  font-family: OxaniumRegular;
+  font-size: 22px;
+  overflow: hidden;
+}
+
+.loader {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.8);
 }

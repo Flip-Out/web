@@ -10,6 +10,7 @@
     rgba(48, 238, 227, 0.3),
     rgba(48, 238, 227, 0.15)
   );
+  min-height: 60px;
 }
 
 .title {
@@ -19,4 +20,8 @@
   font-size: 24px;
   letter-spacing: 5px;
   text-shadow: 0 9px 9px black;
+
+  @media (max-width: 600px) {
+    display: none;
+  }
 }
