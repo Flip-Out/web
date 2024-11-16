@@ -14,7 +14,7 @@ resource "cloudflare_record" "app_domain" {
   ttl     = 60
 }
 
-resource "cloudflare_record" "additional_domain" {
+resource "cloudflare_record" "cdn_domain" {
   zone_id = data.cloudflare_zone.base_zone.id
   name = local.cdn-domain
   value = cloudflare_record.app_domain.hostname
