@@ -43,7 +43,6 @@ locals {
   capacity_provider = local.use_spots ? "spot_${local.cluster_name}" : "on_demand_${local.cluster_name}"
   cpu               = 128
   memory            = 150
-  cdn_rule_priority = var.alb_rule_priority + 1
 }
 
 resource "aws_lb_target_group" "service_tg" {
@@ -66,22 +65,6 @@ resource "aws_lb_listener_rule" "app_rule" {
   condition {
     host_header {
       values = [cloudflare_record.app_domain.hostname]
-    }
-  }
-}
-
-resource "aws_lb_listener_rule" "cdn_rule" {
-  listener_arn = data.aws_lb_listener.https.arn
-  priority     = var.deploy_env == "prod" ? local.cdn_rule_priority : local.cdn_rule_priority + 1000
-
-  action {
-    type             = "forward"
-    target_group_arn = aws_lb_target_group.service_tg.arn
-  }
-
-  condition {
-    host_header {
-      values = [cloudflare_record.cdn_domain.hostname]
     }
   }
 }
