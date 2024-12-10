@@ -3,7 +3,7 @@ name: PR build and tf plan check
 on:
   pull_request:
     branches:
-      - main
+      - prod
       - develop
 
 permissions:
