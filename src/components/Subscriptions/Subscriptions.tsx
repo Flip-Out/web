@@ -12,6 +12,7 @@ import { loadFromLocalStorage, LOCAL_STORAGE } from '../../utils/localStorage';
 import { useStoreApi } from '../../hooks/useStoreApi';
 import { useDispatch } from '../../store/dispatch';
 import { addNotification, updateLoadingState } from '../../store/actions';
+import { Pay } from '../ArcPay/Pay'
 
 interface SubscriptionProps extends GenericProps {
   subscriptions: Array<Subscription>;
@@ -88,6 +89,7 @@ export function Subscriptions({
             <div>{subscription.tonCurrency}</div>
             <TonCurrency className={styles.payIcon} />
           </div>
+          <Pay />
           <Button
             handleClick={() => subscribe(subscription)}
             disabled={
