@@ -16,7 +16,7 @@ export function useArcPayApi() {
     const createOrder = async (): Promise<OrderOut> => {
         const user = getUser();
         console.log(`user: ${JSON.stringify(user)}`)
-        const { data, status } = axios.post<OrderOut>('/arcpay/create-order', {
+        const { data } = await axios.post<OrderOut>('/arcpay/create-order', {
             // user,
         });
         const order: OrderOut = data;
