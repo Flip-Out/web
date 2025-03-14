@@ -31,3 +31,5 @@ dev.env
 prod.env
 .env*
 tsconfig.app.tsbuildinfo
+.pnp.cjs
+.pnp.loader.mjs
