@@ -22,8 +22,7 @@ export function Pay() {
                         console.log("test arcpay")
                         setOrder({} as OrderOut)
                         createOrder()
-                            .then((response) => response.json())
-                            .then((data) => setOrder(data as OrderOut));
+                            .then((data) => setOrder(data));
                     }}>
                     Create Order
                 </button>

@@ -1,5 +1,7 @@
+import { OrderOut } from '@arcpay/react-sdk/dist/types/order';
 import axios from '../lib/axios';
 import {loadFromLocalStorage, LOCAL_STORAGE} from "../utils/localStorage.ts";
+
 export function useArcPayApi() {
     const getUser = () => {
         const user = loadFromLocalStorage(
@@ -11,10 +13,10 @@ export function useArcPayApi() {
         return JSON.parse(user);
     };
 
-    const createOrder = async () => {
-        const user = getUser();
+    const createOrder = async (): Promise<OrderOut> => {
+        // const user = getUser();
 
-        return axios.post<{ paymentLink: string }>('/arcpay/create-order', {
+        return axios.post<OrderOut>('/arcpay/create-order', {
             // user,
         });
     };
