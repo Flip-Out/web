@@ -16,10 +16,10 @@ export function useArcPayApi() {
     const createOrder = async (): Promise<OrderOut> => {
         const user = getUser();
         console.log(`user: ${JSON.stringify(user)}`)
-        const response = axios.post<OrderOut>('/arcpay/create-order', {
+        const { data, status } = axios.post<OrderOut>('/arcpay/create-order', {
             // user,
         });
-        const order: OrderOut = response.data;
+        const order: OrderOut = data;
         return order;
     };
 
