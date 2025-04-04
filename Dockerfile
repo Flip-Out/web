@@ -32,7 +32,9 @@ COPY . /app
 COPY --from=config /app/.env /app/
 
 WORKDIR /app
-RUN yarn install && \
+
+RUN corepack enable && \
+    yarn install --immutable && \
     yarn run build
 
 # -----------------------------
@@ -43,4 +45,3 @@ RUN rm /etc/nginx/conf.d/default.conf
 COPY .devops/docker/nginx.conf /etc/nginx/conf.d
 EXPOSE 8080
 CMD ["nginx", "-g", "daemon off;"]
-
