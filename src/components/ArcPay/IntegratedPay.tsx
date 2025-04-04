@@ -1,4 +1,3 @@
-// src/components/ArcPay/IntegratedPay.tsx
 import { OrderOut, OrderStatus } from '@arcpay/react-sdk/dist/types/order';
 import OrderView from './OrderView';
 import { useEffect, useState, useRef } from 'react';
@@ -7,54 +6,47 @@ import ArcpayStatus from '@arcpay/react-sdk/dist/types/arcpay';
 
 type Props = {
     orderId: string;
-    onSuccess: () => void; // Added prop
-    onCancel: () => void;  // Added prop
+    onSuccess: () => void;
+    onCancel: () => void;
 };
 
 function IntegratedPay({ orderId, onSuccess, onCancel }: Props) {
     const arcPay = useArcPay();
     const [order, setOrder] = useState<OrderOut | undefined>();
-    const [isPaying, setIsPaying] = useState(false); // Track payment process
-    const orderStatusRef = useRef<OrderStatus>(); // Ref to track status
+    const [isPaying, setIsPaying] = useState(false);
+    const orderStatusRef = useRef<OrderStatus | undefined>();
 
     useEffect(() => {
-        // Store initial status in ref
         if (order) {
             orderStatusRef.current = order.status;
         }
     }, [order]);
-
     useEffect(() => {
-        console.log(`IntegratedPay: Subscribing to order ${orderId}`);
-        const unsubscribe = arcPay.onOrderChange(orderId, (o) => {
-            console.log('IntegratedPay: order changed:', o);
-            setOrder(o); // Update order details shown by OrderView
+        console.log(`IntegratedPay: Setting listener for order ${orderId}`);
+        try {
+            arcPay.onOrderChange(orderId, (o) => {
+                console.log('IntegratedPay: order changed:', o);
+                setOrder(o);
 
-            // Check if status changed *to* PAID
-            if (o.status === OrderStatus.PAID && orderStatusRef.current !== OrderStatus.PAID) {
-                console.log("IntegratedPay: Detected PAID status via listener, calling onSuccess");
-                onSuccess(); // Trigger success callback
-                setIsPaying(false); // Ensure paying state is reset
-            }
-            // Update ref *after* checking
-            orderStatusRef.current = o.status;
+                if (o.status === OrderStatus.captured && orderStatusRef.current !== OrderStatus.captured) {
+                    console.log("IntegratedPay: Detected CAPTURED status via listener, calling onSuccess");
+                    onSuccess();
+                    setIsPaying(false);
+                }
+                const previousStatus = orderStatusRef.current;
+                orderStatusRef.current = o.status;
 
-            // Optional: Handle expired/failed status
-            if (o.status === OrderStatus.EXPIRED || o.status === OrderStatus.FAILED) {
-                if (orderStatusRef.current !== o.status) {
-                    console.log(`IntegratedPay: Detected ${OrderStatus[o.status]} status, calling onCancel`);
+                if ((o.status === OrderStatus.failed || o.status === OrderStatus.canceled) &&
+                    (previousStatus !== OrderStatus.failed && previousStatus !== OrderStatus.canceled)) {
+                    console.log(`IntegratedPay: Detected ${o.status.toUpperCase()} status, calling onCancel`);
                     onCancel();
                     setIsPaying(false);
                 }
-            }
-        });
-
-        // Cleanup
-        return () => {
-            console.log(`IntegratedPay: Unsubscribing from order ${orderId}`);
-            unsubscribe();
-        };
-    }, [orderId, arcPay, onSuccess, onCancel]); // Add callbacks
+            });
+        } catch (error) {
+            console.error("Error setting order change listener:", error);
+        }
+    }, [orderId, arcPay, onSuccess, onCancel]);
 
     const handlePayClick = async () => {
         if (!order || isPaying) return;
@@ -63,24 +55,18 @@ function IntegratedPay({ orderId, onSuccess, onCancel }: Props) {
             console.log(`IntegratedPay: Calling arcPay.pay for order ${orderId}`);
             const order_info = await arcPay.pay(orderId);
             console.log('IntegratedPay: arcPay.pay response:', order_info);
-            // IMPORTANT: arcPay.pay might return *before* the transaction is fully confirmed
-            // and the status updates via onOrderChange. Rely on the listener for onSuccess.
-            // We *don't* call onSuccess immediately here.
-            // If pay *itself* indicates success reliably, you could call it here, but the listener is safer.
-            // If order_info *already* has status PAID, we can potentially call onSuccess early.
-            if (order_info?.status === OrderStatus.PAID && orderStatusRef.current !== OrderStatus.PAID) {
-                console.log("IntegratedPay: Detected PAID status immediately after pay call, calling onSuccess");
+
+            if (order_info?.status === OrderStatus.captured && orderStatusRef.current !== OrderStatus.captured) {
+                console.log("IntegratedPay: Detected CAPTURED status immediately after pay call, calling onSuccess");
                 onSuccess();
+                setIsPaying(false);
             }
-            // setIsPaying(false); // Listener will handle this when status changes
 
         } catch (error) {
             console.error('IntegratedPay: arcPay.pay error:', error);
-            // Assume any error during pay means cancellation or failure
             setIsPaying(false);
-            onCancel(); // Trigger cancel callback on error
+            onCancel();
         }
-        // Do not set isPaying false here necessarily, wait for listener confirmation or error
     };
 
 
@@ -88,8 +74,7 @@ function IntegratedPay({ orderId, onSuccess, onCancel }: Props) {
         return <>Loading Payment Details...</>;
     }
 
-    // Don't show Pay button if already paid/failed/expired/paying
-    const canPay = !isPaying && (order.status === OrderStatus.PENDING || order.status === OrderStatus.NEW);
+    const canPay = !isPaying && (order.status === OrderStatus.created || order.status === OrderStatus.pending);
 
     return (
         <>
@@ -107,7 +92,6 @@ function IntegratedPay({ orderId, onSuccess, onCancel }: Props) {
                     <button onClick={() => arcPay.disconnect()} style={{marginLeft: '10px'}}>Disconnect Wallet</button>
                 </>
             )}
-            {/* Add a manual cancel button */}
             <button onClick={onCancel} style={{marginLeft: '10px'}} disabled={isPaying}>Cancel</button>
         </>
     );
