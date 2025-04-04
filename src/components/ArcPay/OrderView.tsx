@@ -22,9 +22,6 @@ const formatOrderStatus = (status: OrderStatus): string => {
         case OrderStatus.canceled:
             return 'Canceled';
         default:
-            // FIX: Since all known enum cases are handled, TS infers 'status' as 'never'.
-            // If an unexpected status string somehow appears, just return it directly.
-            // It's already a string because OrderStatus is a string enum.
             return status;
     }
 };
