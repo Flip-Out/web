@@ -1,5 +1,4 @@
-// src/components/Subscriptions/Subscriptions.tsx
-import React, { useEffect, useState } from 'react'; // Added React for fragment <>
+import React, { useEffect, useState, useCallback } from 'react';
 import Cash from '../../assets/Cash';
 import Crystals from '../../assets/Crystals';
 import InternalCurrency from '../../assets/InternalCurrency';
@@ -13,14 +12,14 @@ import { loadFromLocalStorage, LOCAL_STORAGE } from '../../utils/localStorage';
 import { useStoreApi } from '../../hooks/useStoreApi';
 import { useDispatch } from '../../store/dispatch';
 import { addNotification, updateLoadingState } from '../../store/actions';
-// Import the modified Pay component
-import { Pay } from '../ArcPay/Pay'; // Adjusted path if necessary
+import { Pay } from '../ArcPay/Pay';
 import { PaymentMethodModal } from '../PaymentMethodModal/PaymentMethodModal';
+
 
 interface SubscriptionProps extends GenericProps {
     subscriptions: Array<Subscription>;
     activeSubscriptions: Array<number>;
-    handleBuyInit: (url: string, title: string) => void; // Kept for Aeon
+    handleBuyInit: (url: string, title: string) => void;
 }
 
 export function Subscriptions({
@@ -28,30 +27,28 @@ export function Subscriptions({
                                   handleBuyInit,
                                   activeSubscriptions,
                               }: SubscriptionProps) {
-    const { createOrder: createAeonOrder } = useStoreApi(); // Rename for clarity
+    const { createOrder: createAeonOrder } = useStoreApi();
     const { dispatch } = useDispatch();
     const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [selectedSubscription, setSelectedSubscription] = useState<Subscription | null>(null);
-    const [showArcPay, setShowArcPay] = useState(false); // State to show ArcPay UI
+    const [showArcPay, setShowArcPay] = useState(false);
 
     useEffect(() => {
         const user = loadFromLocalStorage(LOCAL_STORAGE.TELEGRAM_AUTH_DATA);
-        setIsLoggedIn(!!user); // Corrected: true if user exists
+        setIsLoggedIn(!!user);
     }, []);
 
-    // --- Aeon Payment Logic ---
-    const handleAeonPayment = (subscription: Subscription) => {
+    const handleAeonPayment = useCallback((subscription: Subscription) => {
         if (!subscription) return;
         const amount = subscription.currency + '00';
         dispatch(updateLoadingState(true));
         setIsModalOpen(false);
 
-        createAeonOrder({ // Use renamed function
+        createAeonOrder({
             purchase_type: PurchaseType.SUBSCRIPTION,
             amount,
             purchaseId: subscription.id,
-            // payment_system: 'aeon' // If backend needs it
         }).then(
             (data) => {
                 handleBuyInit(data?.data.paymentLink || '', subscription.details);
@@ -64,53 +61,43 @@ export function Subscriptions({
                 setSelectedSubscription(null);
             }
         );
-    };
+    }, [dispatch, createAeonOrder, handleBuyInit]);
 
-    // --- ArcPay Trigger Logic ---
-    const handleArcPayPayment = (subscription: Subscription) => {
+
+    const handleArcPayPayment = useCallback((subscription: Subscription) => {
         if (!subscription) return;
-        console.log('Selected ArcPay for:', subscription.details);
-        setIsModalOpen(false); // Close selection modal
-        // selectedSubscription is already set
-        setShowArcPay(true); // Set state to render the ArcPay component
-    };
+        setIsModalOpen(false);
+        setShowArcPay(true);
+    }, []);
 
-    // --- Open Modal ---
-    const handleSubscribeClick = (subscription: Subscription) => {
+    const handleSubscribeClick = useCallback((subscription: Subscription) => {
         setSelectedSubscription(subscription);
         setIsModalOpen(true);
-    };
+    }, []);
 
-    // --- ArcPay Component Callbacks ---
-    const handleArcPaySuccess = () => {
-        console.log('Subscriptions: ArcPay Payment Successful');
+    const handleArcPaySuccess = useCallback(() => {
         dispatch(addNotification({ message: 'ArcPay payment successful!', type: 'success'}));
-        setShowArcPay(false); // Hide ArcPay component
-        setSelectedSubscription(null); // Clear selection
-        // TODO: Add logic to refresh user's active subscriptions list here
-        // Example: fetchActiveSubscriptions();
-    };
+        setShowArcPay(false);
+        setSelectedSubscription(null);
+    }, [dispatch]);
 
-    const handleArcPayCancel = () => {
-        console.log('Subscriptions: ArcPay Payment Cancelled or Failed');
+    const handleArcPayCancel = useCallback(() => {
         dispatch(addNotification({ message: 'ArcPay payment cancelled or failed.', type: 'info'}));
-        setShowArcPay(false); // Hide ArcPay component
-        setSelectedSubscription(null); // Clear selection
-    };
+        setShowArcPay(false);
+        setSelectedSubscription(null);
+    }, [dispatch]);
 
-    const handleModalClose = () => {
+    const handleModalClose = useCallback(() => {
         setIsModalOpen(false);
         setSelectedSubscription(null);
-    }
+    }, []);
 
-    // --- Render Logic ---
     return (
-        <React.Fragment> {/* Use Fragment shorthand */}
+        <React.Fragment>
             {subscriptions.map((subscription, index) => (
                 <Card className={styles.subscription} key={index}>
                     <div className={styles.subscriptionWrapper}>
                         <div className={styles.details}>
-                            {/* ... details content ... */}
                             <div className={styles.detailsTitle}>{subscription.details}</div>
                             <div className={styles.additionalInfo}>
                                 <div>{subscription.additionalInfo}</div>
@@ -131,7 +118,6 @@ export function Subscriptions({
                             </div>
                         </div>
                         <div className={styles.currencyWrapper}>
-                            {/* ... currency display ... */}
                             <div className={styles.currency}>
                                 <div>{subscription.currency}</div>
                                 <InternalCurrency className={styles.payIcon} />
@@ -144,7 +130,7 @@ export function Subscriptions({
                                 disabled={
                                     !isLoggedIn ||
                                     activeSubscriptions.includes(subscription.id) ||
-                                    showArcPay // Disable while ArcPay component is shown
+                                    showArcPay
                                 }
                             >
                                 {activeSubscriptions.includes(subscription.id) ? 'Subscribed' : 'Subscribe'}
@@ -154,24 +140,20 @@ export function Subscriptions({
                 </Card>
             ))}
 
-            {/* Payment Method Selection Modal */}
             <PaymentMethodModal
                 isOpen={isModalOpen}
                 onClose={handleModalClose}
                 subscription={selectedSubscription}
                 onSelectAeon={handleAeonPayment}
-                onSelectArcPay={handleArcPayPayment} // This just triggers showing the ArcPay component
+                onSelectArcPay={handleArcPayPayment}
             />
 
-            {/* Render ArcPay Component Conditionally */}
             {showArcPay && selectedSubscription && (
                 <Pay
-                    // --- Pass required props ---
-                    amount={selectedSubscription.tonCurrency.toString()} // Ensure amount is string
-                    currency="TON" // Assuming ArcPay uses TON - adjust if needed
+                    amount={selectedSubscription.tonCurrency.toString()}
+                    currency="TON"
                     purchaseId={selectedSubscription.id}
-                    description={selectedSubscription.details} // Pass description
-                    // --- Pass callback functions ---
+                    description={selectedSubscription.details}
                     onSuccess={handleArcPaySuccess}
                     onCancel={handleArcPayCancel}
                 />

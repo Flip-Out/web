@@ -3,6 +3,7 @@ import axios from 'axios';
 import axiosInstance from '../lib/axios';
 import { loadFromLocalStorage, LOCAL_STORAGE } from "../utils/localStorage";
 import { type AxiosError } from 'axios';
+import { useCallback } from 'react';
 
 interface CreateOrderDetails {
     amount: string;
@@ -37,7 +38,7 @@ export function useArcPayApi() {
         }
     };
 
-    const createOrder = async (orderDetails: CreateOrderDetails): Promise<OrderOut> => {
+    const createOrder = useCallback(async (orderDetails: CreateOrderDetails): Promise<OrderOut> => {
         const userAuthData = getUserAuthData();
 
         if (!userAuthData) {
@@ -75,9 +76,10 @@ export function useArcPayApi() {
             } else if (error instanceof Error) {
                 errorMessage = error.message;
             }
+            console.error("ArcPay createOrder API Error:", error);
             throw new Error(errorMessage);
         }
-    };
+    }, []);
 
     return {
         createOrder,
