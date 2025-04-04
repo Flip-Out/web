@@ -142,7 +142,7 @@ export function Subscriptions({
                             <Button
                                 handleClick={() => handleSubscribeClick(subscription)}
                                 disabled={
-                                    //!isLoggedIn ||
+                                    !isLoggedIn ||
                                     activeSubscriptions.includes(subscription.id) ||
                                     showArcPay // Disable while ArcPay component is shown
                                 }
