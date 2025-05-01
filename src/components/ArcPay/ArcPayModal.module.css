@@ -1,0 +1,46 @@
+.modalOverlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.7);
+    align-items: center;
+    justify-content: center;
+    z-index: 1050;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+.modalContent {
+    background-color: #252532;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.4);
+    color: #fff;
+    max-width: 500px;
+    width: 100%;
+    max-height: 90vh;
+    overflow-y: auto;
+    box-sizing: border-box;
+}
+
+.explicitCloseButton {
+    margin-top: 15px;
+    padding: 8px 15px;
+    background-color: transparent;
+    border: 1px solid #aaa;
+    color: #aaa;
+    cursor: pointer;
+    border-radius: 4px;
+    width: 100%;
+}
+
+.explicitCloseButton:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+    border-color: #ccc;
+    color: #ccc;
+}
+
+.modalContent > .arcpay-modal-container {
+}
