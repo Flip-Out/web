@@ -18,17 +18,12 @@ function IntegratedPay({ order, onPay, onCancel }: Props) {
         if (!order || isPaying) return;
         setIsPaying(true);
         try {
-            await onPay(); // Call the payment function passed from parent
-            // Parent's listener will handle success/failure based on status change
-            // Set paying false only if pay call itself errors immediately
+            console.log('handlePayClick:onPay');
+            await onPay();
         } catch (error) {
             console.error('IntegratedPay: onPay trigger error:', error);
-            // Parent should handle errors originating from arcPay.pay via the promise
-            setIsPaying(false); // Allow retry if the trigger failed
+            setIsPaying(false);
         }
-        // Let parent's listener handle setting isPaying false on final status
-        // Or consider setting false after a timeout if needed for UI responsiveness
-        // setIsPaying(false); // Re-evaluate if needed here or handled by parent status updates
     };
 
     if (!order) {
