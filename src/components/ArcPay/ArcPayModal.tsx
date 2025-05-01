@@ -1,4 +1,3 @@
-import React from 'react';
 import { Pay } from './Pay';
 import styles from './ArcPayModal.module.css';
 
