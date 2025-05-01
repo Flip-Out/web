@@ -1,5 +1,6 @@
 import { Pay } from './Pay';
 import styles from './ArcPayModal.module.css';
+import { Box, Dialog, useMediaQuery, useTheme } from '@mui/material';
 
 interface ArcPayModalProps {
     isOpen: boolean;
@@ -23,10 +24,18 @@ export function ArcPayModal({
     if (!isOpen) {
         return null;
     }
+    const theme = useTheme();
+    const fullScreen = useMediaQuery(theme.breakpoints.down('md'));
 
     return (
-        <dialog className={styles.modalOverlay} onClick={onClose}>
-            <div className={styles.modalContent} onClick={(e) => e.stopPropagation()}>
+        <Dialog
+            open={isOpen}
+            fullScreen={fullScreen}
+            aria-labelledby="responsive-dialog"
+            maxWidth="sm"
+            style={{ border: 'rgba(48, 238, 227, 0.2)' }}
+        >
+            <Box display="flex" flexDirection="column" className={styles.wrapper}>
                 <Pay
                     amount={amount}
                     currency={currency}
@@ -35,7 +44,7 @@ export function ArcPayModal({
                     onSuccess={onSuccess}
                     onCancel={onClose}
                 />
-            </div>
-        </dialog>
+            </Box>
+        </Dialog>
     );
 }
