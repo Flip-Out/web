@@ -85,7 +85,7 @@ export function Pay({
 
         const handleOrderChange = (o: OrderOut) => {
             if (!isListenerActive || o.uuid !== orderId) return;
-
+            console.log("handleOrderChange: " + JSON.stringify(o))
             // Update the central order state
             setOrder(prevOrder => {
                 // Prevent unnecessary re-renders if the object is identical

@@ -25,7 +25,7 @@ export function ArcPayModal({
     }
 
     return (
-        <div className={styles.modalOverlay} onClick={onClose}>
+        <dialog className={styles.modalOverlay} onClick={onClose}>
             <div className={styles.modalContent} onClick={(e) => e.stopPropagation()}>
                 <Pay
                     amount={amount}
@@ -36,6 +36,6 @@ export function ArcPayModal({
                     onCancel={onClose}
                 />
             </div>
-        </div>
+        </dialog>
     );
 }
