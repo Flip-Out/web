@@ -103,13 +103,12 @@ export function Pay({
             }
         };
 
-        const unsubscribe = arcPay.onOrderChange(orderId, handleOrderChange) as () => void;
+        arcPay.onOrderChange(orderId, handleOrderChange);
+        console.log('orderId: ' + orderId);
 
         return () => {
+            console.log('unsubscribe');
             isListenerActive = false;
-            if (typeof unsubscribe === 'function') {
-                unsubscribe();
-            }
         };
     }, [order?.uuid, arcPay, onSuccess, onCancel]);
 
