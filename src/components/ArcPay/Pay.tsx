@@ -103,7 +103,7 @@ export function Pay({
             }
         };
 
-        const unsubscribe = arcPay.onOrderChange(orderId, handleOrderChange);
+        const unsubscribe = arcPay.onOrderChange(orderId, handleOrderChange) as () => void;
 
         return () => {
             isListenerActive = false;
