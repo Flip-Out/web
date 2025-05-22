@@ -36,6 +36,11 @@ export function Pay({
     const { createOrder } = useArcPayApi();
     const arcPay = useArcPay();
     const orderStatusRef = useRef<OrderStatus | undefined>();
+    const arcPayRef = useRef(arcPay);
+
+    useEffect(() => {
+        arcPayRef.current = arcPay;
+    }, [arcPay]);
 
     useEffect(() => {
         if (order) {
@@ -103,14 +108,14 @@ export function Pay({
             }
         };
 
-        arcPay.onOrderChange(orderId, handleOrderChange);
+        arcPayRef.current.onOrderChange(orderId, handleOrderChange);
         console.log('orderId: ' + orderId);
 
         return () => {
             console.log('unsubscribe');
             isListenerActive = false;
         };
-    }, [order?.uuid, arcPay, onSuccess, onCancel]);
+    }, [order?.uuid, onSuccess, onCancel]);
 
 
     const handleIntegratedPay = useCallback(async () => {
