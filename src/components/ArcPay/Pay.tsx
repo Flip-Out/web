@@ -86,38 +86,30 @@ export function Pay({
         const handleOrderChange = (o: OrderOut) => {
             if (!isListenerActive || o.uuid !== orderId) return;
             console.log("handleOrderChange: " + JSON.stringify(o))
-            // Update the central order state
             setOrder(prevOrder => {
-                // Prevent unnecessary re-renders if the object is identical
                 if (prevOrder && o && prevOrder.status === o.status && prevOrder.txn?.hash === o.txn?.hash) {
                     return prevOrder;
                 }
                 return o;
             });
 
-            // Use ref for checking previous status to avoid stale closure issues
             const previousStatus = orderStatusRef.current;
 
-            // Call callbacks based on status change detection
             if (o.status === OrderStatus.captured && previousStatus !== OrderStatus.captured) {
                 onSuccess();
             } else if ((o.status === OrderStatus.failed || o.status === OrderStatus.canceled) &&
                 (previousStatus !== OrderStatus.failed && previousStatus !== OrderStatus.canceled)) {
                 onCancel();
             }
-            // Ref is updated via separate useEffect watching `order` state
         };
 
-        try {
-            arcPay.onOrderChange(orderId, handleOrderChange);
-        } catch (err) {
-            console.error("Pay: Error setting order change listener:", err);
-            setError("Failed to monitor payment status.");
-        }
+        const unsubscribe = arcPay.onOrderChange(orderId, handleOrderChange);
 
         return () => {
             isListenerActive = false;
-            // No SDK cleanup function exists or is needed here based on SDK design
+            if (typeof unsubscribe === 'function') {
+                unsubscribe();
+            }
         };
     }, [order?.uuid, arcPay, onSuccess, onCancel]);
 
